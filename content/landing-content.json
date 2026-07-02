@@ -1,0 +1,147 @@
+{
+  "brand": {
+    "name": "PETKIT",
+    "href": "#top"
+  },
+  "nav": [
+    { "label": "Product", "href": "#product" },
+    { "label": "Features", "href": "#features" },
+    { "label": "Specs", "href": "#specs" },
+    { "label": "Ecosystem", "href": "#ecosystem" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "hero": {
+    "productName": "Pura Max 2",
+    "headline": "The litter box that cleans itself.",
+    "body": "Meet Pura Max 2, a self-cleaning cat litter box designed for a calmer home and a cleaner daily routine.",
+    "primaryCta": { "label": "Explore Pura Max 2", "href": "#product" },
+    "secondaryCta": { "label": "See the ecosystem", "href": "#ecosystem" },
+    "visual": {
+      "label": "Pura Max 2",
+      "title": "Pura Max 2",
+      "caption": "Balanced automatic litter care with a low-entry enclosed design and app-connected routine visibility.",
+      "image": {
+        "src": "/images/pura-max-2-main.webp",
+        "alt": "Pura Max 2 self-cleaning cat litter box with cat",
+        "width": 1024,
+        "height": 1024
+      },
+      "stats": [
+        { "label": "XL capacity", "value": "76L" },
+        { "label": "Waste bin", "value": "7L" },
+        { "label": "Noise level", "value": "35 dB" }
+      ]
+    }
+  },
+  "careSystem": {
+    "id": "ecosystem",
+    "heading": "Complete the Smart Cat Care ecosystem.",
+    "body": "Pair self-cleaning litter care with smart feeding and fresh water in one connected PETKIT routine.",
+    "items": [
+      {
+        "title": "Clean",
+        "product": "Pura Max 2",
+        "body": "Reduce daily scooping and keep litter-box status easier to follow through app-connected usage logs."
+      },
+      {
+        "title": "Feed",
+        "product": "YumShare Solo",
+        "body": "Support scheduled meals and remote check-ins with a compact camera feeder."
+      },
+      {
+        "title": "Drink",
+        "product": "Eversweet Max 2",
+        "body": "Support daily hydration with cordless filtered water, app monitoring, and a larger refill routine."
+      }
+    ]
+  },
+  "primaryProduct": {
+    "id": "pura-max-2",
+    "name": "Pura Max 2",
+    "model": "P9902",
+    "heading": "Designed around cleaner routines.",
+    "body": "Every detail of Pura Max 2 is built to reduce daily scooping while keeping the litter routine safer, quieter, and easier to follow.",
+    "stats": [
+      { "label": "Interior capacity", "value": "76L" },
+      { "label": "Waste bin", "value": "7L" },
+      { "label": "Noise level", "value": "35 dB" },
+      { "label": "Safety sensors", "value": "11" },
+      { "label": "Cat weight range", "value": "1.5-10 kg" },
+      { "label": "Dimensions", "value": "620 x 538 x 552 mm" }
+    ],
+    "features": [
+      {
+        "title": "Automatic cleaning cycle",
+        "body": "Designed to separate waste after use and reduce the need for daily scooping."
+      },
+      {
+        "title": "Safety sensor system",
+        "body": "Sensor-based protection helps keep cleaning routines controlled around daily cat use."
+      },
+      {
+        "title": "App-connected routine logs",
+        "body": "Usage and device status can be framed as routine visibility, not medical diagnosis."
+      },
+      {
+        "title": "Odor-control accessories",
+        "body": "The sealed waste bin and odor-control accessories support a cleaner indoor setup."
+      },
+      {
+        "title": "Low-entry enclosed design",
+        "body": "A 200 mm entry height helps position the product for cats that need easier access than taller enclosed boxes."
+      },
+      {
+        "title": "Quiet daily operation",
+        "body": "The 35 dB operating claim supports a calmer litter routine for compact indoor homes."
+      }
+    ]
+  },
+  "comparison": {
+    "id": "compare",
+    "heading": "Choose by household need.",
+    "body": "Pura Max 2 stays as the main product, while other PETKIT litter boxes clarify the upgrade or alternative path.",
+    "columns": ["Need", "PETKIT product", "Why it fits"],
+    "rows": [
+      [
+        "Balanced enclosed litter care",
+        "Pura Max 2",
+        "76L interior, 7L waste bin, low 200 mm entry, quiet 35 dB operation, and no camera premium."
+      ],
+      [
+        "Camera and richer multi-cat visibility",
+        "Purobot Max Pro 2",
+        "AI camera and recognition features support homes that need more identity and event visibility."
+      ],
+      [
+        "Lowest entry and disposable tray routine",
+        "Purobot Crystal Duo",
+        "Open-top design, 180 mm entry, and crystal tray routine fit a different maintenance preference."
+      ]
+    ],
+    "note": "Hands-free duration, warranty, and pricing depend on market, purchase date, number of cats, usage frequency, and environment."
+  },
+  "updates": {
+    "id": "contact",
+    "heading": "Be first to know",
+    "body": "Join the list for launch dates, pricing, and early-bird offers.",
+    "fields": [
+      {
+        "label": "Full name",
+        "name": "name",
+        "type": "text",
+        "placeholder": "Your name"
+      },
+      {
+        "label": "Email",
+        "name": "email",
+        "type": "email",
+        "placeholder": "you@example.com"
+      }
+    ],
+    "submitLabel": "Notify me",
+    "disclaimer": "Availability, pricing, and warranty terms can vary by market."
+  },
+  "footer": {
+    "body": "PETKIT Smart Cat Care."
+  }
+}

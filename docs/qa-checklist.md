@@ -21,7 +21,7 @@
 
 ## Navigation
 
-- [ ] Header anchor links scroll to the correct sections.
+- [ ] Header controls scroll to the correct sections without changing the URL.
 - [ ] Primary CTA scrolls to signup.
 - [ ] Secondary CTA scrolls to features.
 - [ ] No broken internal links.
@@ -48,7 +48,7 @@
 - [ ] `node_modules/` is not tracked.
 - [ ] `.next/` is not tracked.
 - [ ] No API keys are committed.
-- [ ] No webhook URLs are committed.
+- [ ] No private endpoint URLs are committed.
 - [ ] No private planning notes are committed.
 
 ## Product Claims

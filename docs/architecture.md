@@ -7,17 +7,14 @@
 - Tailwind CSS
 - Vercel deployment
 
-Planned supporting libraries:
+Supporting libraries:
 
-- next-intl for English/Vietnamese routing
-- next-themes for dark mode
-- Zustand for persisted cart, wishlist, and recently viewed state
-- Zod for form validation
-- Vercel Analytics or GTM/GA4 for tracking
+- Zod for content validation
+- Vercel Analytics for page-view tracking
 
 ## App Structure
 
-Current V0 structure:
+Current structure:
 
 ```txt
 app/
@@ -33,7 +30,7 @@ docs/
    └─ codebase-map.mmd
 ```
 
-Target V1 structure:
+Possible next structure:
 
 ```txt
 app/
@@ -44,9 +41,7 @@ app/
 │     └─ [slug]/
 │        └─ page.tsx
 ├─ api/
-│  ├─ webhook/
-│  │  └─ route.ts
-│  └─ chat/
+│  └─ leads/
 │     └─ route.ts
 ├─ layout.tsx
 └─ globals.css
@@ -55,10 +50,10 @@ components/
 ├─ sections/
 ├─ product/
 ├─ cart/
-├─ chatbot/
 └─ ui/
-data/
-└─ products.ts
+content/
+├─ landing-content.json
+└─ product-foundation.json
 lib/
 ├─ analytics.ts
 ├─ products.ts
@@ -72,22 +67,17 @@ stores/
 
 ## Data Flow
 
-Product data will be centralized in `data/products.ts` and reused by:
+Product data is centralized in JSON content files and reused by:
 
 - landing page sections
 - product listing
 - product detail pages
-- chatbot context
 - SEO metadata
 
-The signup form will submit to `/api/webhook`. The API route validates input server-side and can forward safe payloads to n8n through a server-side environment variable.
-
-The chatbot enhancement will submit to `/api/chat`, which can call an AI provider using a server-side API key.
+The signup form can later submit to a server-side lead endpoint. The API route should validate input server-side before forwarding any payload.
 
 ## Security And Privacy
 
 - API keys stay in environment variables.
-- Webhook URLs are server-side only.
 - `.env.local` is ignored.
-- Internal planning files are not tracked in the public repository.
 - Product health data is presented as daily behavior insight, not diagnosis.
