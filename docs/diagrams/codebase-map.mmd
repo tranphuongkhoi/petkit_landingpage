@@ -1,0 +1,23 @@
+flowchart TD
+  U["User browser"] --> H["app/page.tsx landing page"]
+  H --> Hero["Hero section"]
+  H --> Features["Feature highlights"]
+  H --> Specs["Technical specs"]
+  H --> Ecosystem["Product ecosystem"]
+  H --> Signup["Signup form UI"]
+
+  Root["app/layout.tsx"] --> Meta["SEO and Open Graph metadata"]
+  Root --> Analytics["Vercel Analytics"]
+  Root --> H
+
+  FutureProducts["Future product routes"] --> Listing["/[locale]/products"]
+  FutureProducts --> Detail["/[locale]/products/[slug]"]
+  ProductData["data/products.ts"] --> H
+  ProductData --> Listing
+  ProductData --> Detail
+
+  Signup --> Webhook["Future app/api/webhook route"]
+  Webhook --> N8N["n8n webhook"]
+
+  Chatbot["Future chatbot widget"] --> ChatApi["Future app/api/chat route"]
+  ChatApi --> AI["AI provider API"]
