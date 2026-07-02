@@ -5,19 +5,16 @@ flowchart TD
   H --> Specs["Technical specs"]
   H --> Ecosystem["Product ecosystem"]
   H --> Signup["Signup form UI"]
+  H --> Cart["Cart drawer"]
+  H --> Floating["Floating actions"]
 
   Root["app/layout.tsx"] --> Meta["SEO and Open Graph metadata"]
   Root --> Analytics["Vercel Analytics"]
   Root --> H
 
-  FutureProducts["Future product routes"] --> Listing["/[locale]/products"]
-  FutureProducts --> Detail["/[locale]/products/[slug]"]
-  ProductData["data/products.ts"] --> H
-  ProductData --> Listing
-  ProductData --> Detail
+  FutureProducts["Possible product routes"] --> Listing["/products"]
+  FutureProducts --> Detail["/products/[slug]"]
+  ProductData["content/product-foundation.json"] --> H
+  LandingData["content/landing-content.json"] --> H
 
-  Signup --> Webhook["Future app/api/webhook route"]
-  Webhook --> N8N["n8n webhook"]
-
-  Chatbot["Future chatbot widget"] --> ChatApi["Future app/api/chat route"]
-  ChatApi --> AI["AI provider API"]
+  Signup --> LeadEndpoint["Possible app/api/leads route"]

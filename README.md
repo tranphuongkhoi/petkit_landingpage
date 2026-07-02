@@ -4,15 +4,15 @@ Responsive product landing page project for PETKIT smart cat care products, prep
 
 ## Current Status
 
-V0 scaffold is in progress. The first milestone is a small deployable Next.js page so GitHub and Vercel can be validated early before the full landing page is built.
+The landing page is ready for preview review. It includes the main product narrative, supporting product cards, cart interaction, floating assistance UI, responsive layout, and Vercel Web Analytics integration.
 
 ## Planned V1 Scope
 
 - Responsive landing page with hero, features, specs, ecosystem, and signup form.
-- Product ecosystem around PETKIT Pura Max 2, YumShare Solo, and Eversweet 7.
+- Product ecosystem around PETKIT Pura Max 2, YumShare Solo, and Eversweet Max 2.
 - Product listing and static product detail pages.
 - SEO metadata and PageSpeed-focused implementation.
-- Optional enhancements: n8n webhook, GTM/GA4 tracking, dark mode, cart/wishlist, and chatbot.
+- Optional enhancements: server-side lead capture, GTM/GA4 tracking, dark mode, and wishlist persistence.
 
 ## Development
 
@@ -32,6 +32,6 @@ npm run build
 
 Copy `.env.example` to `.env.local` for local secrets. Do not commit `.env.local`.
 
-## Private Workflow Safety
+## Repository Safety
 
-Internal planning files live in `private/` and are ignored by Git. Raw prompts, local notes, webhook URLs, API keys, and private screenshots must not be committed.
+Local notes, API keys, private screenshots, and environment files must not be committed.

@@ -71,7 +71,7 @@
           { "label": "Entry", "value": "180 mm" },
           { "label": "Noise", "value": "40 dB" }
         ],
-        "fit": "Best fit for low-entry access or a disposable tray workflow, with the crystal tray constraint clearly stated."
+        "fit": "Best fit for low-entry access or a disposable tray routine, with the crystal tray constraint clearly stated."
       }
     ]
   },
@@ -131,7 +131,7 @@
     "rows": [
       ["Balanced enclosed litter care", "Pura Max 2", "76L interior, 7L waste bin, low 200 mm entry, quiet 35 dB operation, and no camera premium."],
       ["Camera and richer multi-cat visibility", "Purobot Max Pro 2", "AI camera and recognition features support homes that need more identity and event visibility."],
-      ["Lowest entry and disposable tray workflow", "Purobot Crystal Duo", "Open-top design, 180 mm entry, and crystal tray workflow fit a different maintenance preference."]
+      ["Lowest entry and disposable tray routine", "Purobot Crystal Duo", "Open-top design, 180 mm entry, and crystal tray routine fit a different maintenance preference."]
     ],
     "note": "Hands-free duration, warranty, and pricing depend on market, purchase date, number of cats, usage frequency, and environment."
   },

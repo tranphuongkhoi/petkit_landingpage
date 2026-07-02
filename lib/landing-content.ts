@@ -1,4 +1,4 @@
-import draftContent from "@/content/landing.draft.json";
+import landingContentJson from "@/content/landing-content.json";
 import { landingContentSchema } from "@/lib/landing-content.schema";
 
-export const landingContent = landingContentSchema.parse(draftContent);
+export const landingContent = landingContentSchema.parse(landingContentJson);

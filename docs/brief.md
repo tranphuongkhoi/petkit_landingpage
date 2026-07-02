@@ -1,6 +1,6 @@
 # Project Brief
 
-This project is a responsive product landing page and mini product experience for PETKIT smart cat care products distributed by HeLiCorp.
+This project is a responsive product landing page and mini product experience for PETKIT smart cat care products.
 
 ## Goal
 
@@ -8,7 +8,7 @@ The site presents PETKIT Pura Max 2 as the primary product and connects it with 
 
 - PETKIT Pura Max 2: smart self-cleaning litter box
 - PETKIT YumShare Solo: smart auto-feeder with camera
-- PETKIT Eversweet 7: smart pet water fountain
+- PETKIT Eversweet Max 2: smart pet water fountain
 
 ## Required Scope
 
@@ -29,16 +29,14 @@ Enhancements are scoped after the core landing page is stable:
 - Product listing page
 - Static product detail pages
 - Cart and wishlist persistence
-- Server-side signup webhook route
 - Vercel Web Analytics or GTM/GA4 tracking
-- Chatbot assistant for product questions
 - Dark mode and refined micro-interactions
 
 ## Non-goals
 
 - No real payment checkout
 - No production customer-data collection
-- No hard-coded private API keys or webhook URLs
+- No hard-coded private API keys
 - No medical or veterinary diagnosis claims
 - No unverified warranty, shipping, or local-market claims
 

@@ -10,7 +10,7 @@ TypeScript keeps product data, page props, and API payloads explicit as the proj
 
 ## Tailwind CSS
 
-Tailwind enables fast responsive implementation while keeping the visual system readable in code. The current prototype intentionally uses a restrained neutral palette so the first deploy stays clean and easy to review.
+Tailwind enables fast responsive implementation while keeping the visual system readable in code. The current interface uses a restrained neutral palette so the deployed page stays clean and easy to review.
 
 ## Vercel Deployment
 
@@ -20,9 +20,9 @@ Vercel is used because it integrates directly with GitHub branches:
 - preview deployments from feature branches
 - clear deployment history for review
 
-## Branch Workflow
+## Branching
 
-Public branch names use conventional workflow prefixes:
+Public branch names use conventional prefixes:
 
 ```txt
 master       -> production deploy
@@ -33,8 +33,6 @@ docs/*       -> public documentation
 chore/*      -> setup, tooling, deployment config
 perf/*       -> performance work
 ```
-
-Internal ticket IDs are used only for planning and do not need to appear in public branch names.
 
 ## Analytics
 
