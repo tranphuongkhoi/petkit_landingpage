@@ -1,0 +1,20 @@
+flowchart TD
+  U["User browser"] --> H["app/page.tsx landing page"]
+  H --> Hero["Hero section"]
+  H --> Features["Feature highlights"]
+  H --> Specs["Technical specs"]
+  H --> Ecosystem["Product ecosystem"]
+  H --> Signup["Signup form UI"]
+  H --> Cart["Cart drawer"]
+  H --> Floating["Floating actions"]
+
+  Root["app/layout.tsx"] --> Meta["SEO and Open Graph metadata"]
+  Root --> Analytics["Vercel Analytics"]
+  Root --> H
+
+  FutureProducts["Possible product routes"] --> Listing["/products"]
+  FutureProducts --> Detail["/products/[slug]"]
+  ProductData["content/product-foundation.json"] --> H
+  LandingData["content/landing-content.json"] --> H
+
+  Signup --> LeadEndpoint["Possible app/api/leads route"]
