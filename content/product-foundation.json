@@ -1,0 +1,161 @@
+{
+  "source": {
+    "title": "PETKIT PuraMax 2 landing page data foundation",
+    "derivedFrom": "/source/product-research/final foundation/deepresearch.index.html",
+    "updatedAt": "2026-07-02",
+    "scope": "PETKIT internal automatic self-cleaning cat litter box comparison"
+  },
+  "litterBoxFamily": {
+    "id": "litter-box-family",
+    "heading": "The self-cleaning litter box family",
+    "body": "Three PETKIT litter boxes in one category. Pick the size, format, and smart features that fit your home.",
+    "products": [
+      {
+        "id": "puramax-2",
+        "name": "Pura Max 2",
+        "model": "P9902",
+        "category": "Litter box",
+        "role": "Core model",
+        "badge": "Hero product",
+        "description": "Balanced enclosed self-cleaning litter care with a 200 mm low entry, app visibility, 35 dB operation, and 11 safety sensors.",
+        "image": {
+          "src": "/images/pura-max-2-main.webp",
+          "alt": "Pura Max 2 self-cleaning cat litter box with cat",
+          "width": 1024,
+          "height": 1024
+        },
+        "specs": [
+          { "label": "Interior", "value": "76L" },
+          { "label": "Waste bin", "value": "7L" },
+          { "label": "Noise", "value": "35 dB" }
+        ],
+        "fit": "Best fit for owners who want the main automatic litter routine without a camera premium."
+      },
+      {
+        "id": "purobot-max-pro-2",
+        "name": "Purobot Max Pro 2",
+        "model": "P9904",
+        "category": "Litter box",
+        "role": "AI camera upgrade",
+        "badge": "Upgrade",
+        "description": "Camera-assisted litter care for richer multi-cat identity and video-based monitoring needs.",
+        "image": {
+          "src": "/images/purobot-max-pro-2.webp",
+          "alt": "Purobot Max Pro 2 automatic litter box",
+          "width": 1024,
+          "height": 1024
+        },
+        "specs": [
+          { "label": "Interior", "value": "76L" },
+          { "label": "Waste bin", "value": "8L" },
+          { "label": "Noise", "value": "35 dB" }
+        ],
+        "fit": "Best fit when camera visibility and multi-cat identity matter more than the lower entry of Pura Max 2."
+      },
+      {
+        "id": "purobot-crystal-duo",
+        "name": "Purobot Crystal Duo",
+        "model": "P9905",
+        "category": "Litter box",
+        "role": "Open-top alternative",
+        "badge": "Alternative",
+        "description": "Open-top format with the lowest entry in this comparison and a proprietary crystal tray system.",
+        "image": {
+          "src": "/images/purobot-crystal-duo.webp",
+          "alt": "Purobot Crystal Duo automatic litter box",
+          "width": 1024,
+          "height": 1024
+        },
+        "specs": [
+          { "label": "Interior", "value": "70L" },
+          { "label": "Entry", "value": "180 mm" },
+          { "label": "Noise", "value": "40 dB" }
+        ],
+        "fit": "Best fit for low-entry access or a disposable tray workflow, with the crystal tray constraint clearly stated."
+      }
+    ]
+  },
+  "ecosystem": {
+    "id": "ecosystem",
+    "heading": "Complete the Smart Cat Care ecosystem",
+    "body": "Pair self-cleaning litter care with smart feeding and fresh water in one connected PETKIT routine.",
+    "products": [
+      {
+        "id": "yumshare-solo",
+        "name": "YumShare Solo",
+        "model": "Feeder",
+        "category": "Add-on",
+        "role": "Feeding",
+        "badge": "Feeder",
+        "description": "Smart feeding support with scheduled meals and camera-assisted check-ins.",
+        "image": {
+          "src": "/images/yumshare-solo.webp",
+          "alt": "YumShare Solo smart feeder",
+          "width": 1024,
+          "height": 1024
+        },
+        "specs": [
+          { "label": "Routine", "value": "Feed" },
+          { "label": "Control", "value": "App" }
+        ],
+        "fit": "Use as the feeding add-on after the litter routine is introduced."
+      },
+      {
+        "id": "eversweet-max-2",
+        "name": "Eversweet Max 2",
+        "model": "Fountain",
+        "category": "Add-on",
+        "role": "Hydration",
+        "badge": "Fountain",
+        "description": "Cordless filtered water support with app monitoring, 3L capacity, and quieter daily hydration.",
+        "image": {
+          "src": "/images/eversweet-max-2.webp",
+          "alt": "Eversweet Max 2 cordless water fountain",
+          "width": 1024,
+          "height": 1024
+        },
+        "specs": [
+          { "label": "Capacity", "value": "3L" },
+          { "label": "Battery", "value": "5000 mAh" },
+          { "label": "Control", "value": "App" }
+        ],
+        "fit": "Use as the cordless hydration add-on in the broader PETKIT care loop."
+      }
+    ]
+  },
+  "useCaseComparison": {
+    "id": "compare",
+    "heading": "Choose by household need",
+    "body": "Pura Max 2 stays as the main product. The other PETKIT models clarify the upgrade or alternative path inside the PETKIT litter box lineup.",
+    "columns": ["Need", "PETKIT product", "Why it fits"],
+    "rows": [
+      ["Balanced enclosed litter care", "Pura Max 2", "76L interior, 7L waste bin, low 200 mm entry, quiet 35 dB operation, and no camera premium."],
+      ["Camera and richer multi-cat visibility", "Purobot Max Pro 2", "AI camera and recognition features support homes that need more identity and event visibility."],
+      ["Lowest entry and disposable tray workflow", "Purobot Crystal Duo", "Open-top design, 180 mm entry, and crystal tray workflow fit a different maintenance preference."]
+    ],
+    "note": "Hands-free duration, warranty, and pricing depend on market, purchase date, number of cats, usage frequency, and environment."
+  },
+  "claimSafety": {
+    "safe": [
+      "Official physical specs and model codes.",
+      "Hands-free claims when paired with the one-cat caveat.",
+      "US warranty when stated as market-specific and date-specific.",
+      "Odor-control mechanisms without promising zero odor.",
+      "App usage and weight tracking without medical diagnosis wording."
+    ],
+    "needsCaveat": [
+      "Warranty outside the US.",
+      "Max Pro 2 exact entrance height and recognition capacity.",
+      "Crystal Duo health or pH-related features.",
+      "Odor percentage claims unless tied to PETKIT lab wording.",
+      "Pricing, because it changes by market and date."
+    ],
+    "doNotUse": [
+      "Unverified superlatives such as best in market or safest.",
+      "Odor-free, 100% safe, or absolute leak-proof claims.",
+      "Medical diagnosis, prevention, or treatment claims.",
+      "Statements that Pura Max 2 has AI camera features.",
+      "Statements that Pura Max 2 works with all litter types."
+    ]
+  }
+}
