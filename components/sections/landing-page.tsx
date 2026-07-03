@@ -1,17 +1,14 @@
 "use client";
 
-import { type FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Cat,
-  ChevronUp,
-  Menu,
-  MessageCircle,
-  PawPrint,
+  Minus,
   Plus,
   Recycle,
-  Send,
   ShieldCheck,
   ShoppingCart,
   Smartphone,
@@ -20,38 +17,40 @@ import {
   Wind,
   X,
 } from "lucide-react";
-import type { LandingContent, LandingFeature, LandingStat } from "@/types/landing";
-import type { ProductCardData, ProductFoundation, ProductSectionData } from "@/types/product-foundation";
-
-type LandingPageProps = {
-  content: LandingContent;
-  productFoundation: ProductFoundation;
-};
-
-type ContentProps = {
-  content: LandingContent;
-};
-
-type ProductFoundationProps = {
-  productFoundation: ProductFoundation;
-};
-
-type ChatMessage = {
-  from: "bot" | "user";
-  text: string;
-};
-
-type CartItem = {
-  id: string;
-  name: string;
-  role: string;
-  quantity: number;
-};
+import { FloatingActions } from "@/components/floating-actions";
+import { SiteFooter, SiteHeader } from "@/components/layout";
+import { CART_STORAGE_KEY, CART_UPDATED_EVENT, getCartItemCount, getItemPrice, type StoredCartItem } from "@/lib/cart-storage";
+import type { LandingFeature, LandingStat } from "@/types/landing";
+import type { ProductCardData, ProductSectionData } from "@/types/product-foundation";
+import { formatUsd } from "@/lib/product-catalog";
+import type { ContentProps, LandingPageProps, ProductFoundationProps } from "@/types/section-props";
 
 export function LandingPage({ content, productFoundation }: LandingPageProps) {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<StoredCartItem[]>([]);
+  const [cartLoaded, setCartLoaded] = useState(false);
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(CART_STORAGE_KEY);
+
+      if (stored) {
+        setCartItems(JSON.parse(stored) as StoredCartItem[]);
+      }
+    } catch {
+      setCartItems([]);
+    } finally {
+      setCartLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!cartLoaded) return;
+
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+    window.dispatchEvent(new Event(CART_UPDATED_EVENT));
+  }, [cartItems, cartLoaded]);
 
   const addToCart = (product: ProductCardData) => {
     setCartItems((items) => {
@@ -61,9 +60,28 @@ export function LandingPage({ content, productFoundation }: LandingPageProps) {
         return items.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
       }
 
-      return [...items, { id: product.id, name: product.name, role: product.role, quantity: 1 }];
+      return [
+        ...items,
+        {
+          id: product.id,
+          image: product.image,
+          name: product.name,
+          priceUsd: product.priceUsd,
+          role: product.role,
+          slug: product.id,
+          quantity: 1,
+        },
+      ];
     });
     setCartOpen(true);
+  };
+
+  const updateCartQuantity = (id: string, quantity: number) => {
+    setCartItems((items) =>
+      items
+        .map((item) => (item.id === id ? { ...item, quantity } : item))
+        .filter((item) => item.quantity > 0),
+    );
   };
 
   const removeFromCart = (id: string) => {
@@ -72,15 +90,27 @@ export function LandingPage({ content, productFoundation }: LandingPageProps) {
 
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <SiteHeader cartCount={cartCount} content={content} onCartOpen={() => setCartOpen(true)} />
+      <SiteHeader
+        brand={content.brand}
+        cartCount={cartCount}
+        mode="landing"
+        nav={content.nav}
+        onCartOpen={() => setCartOpen(true)}
+      />
       <HeroSection content={content} />
       <FeaturesSection content={content} />
       <SpecsSection content={content} />
       <ProductFamilySection onAddToCart={addToCart} productFoundation={productFoundation} />
       <ProductSectionCards onAddToCart={addToCart} section={productFoundation.ecosystem} variant="wide" />
       <UpdatesSection content={content} />
-      <SiteFooter content={content} />
-      <CartDrawer cartItems={cartItems} open={cartOpen} onClose={() => setCartOpen(false)} onRemove={removeFromCart} />
+      <SiteFooter body={content.footer.body} />
+      <CartDrawer
+        cartItems={cartItems}
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        onQuantityChange={updateCartQuantity}
+        onRemove={removeFromCart}
+      />
       <FloatingActions />
     </main>
   );
@@ -100,123 +130,13 @@ function scrollToSection(target: string) {
   }
 }
 
-function SiteHeader({
-  cartCount,
-  content,
-  onCartOpen,
-}: ContentProps & {
-  cartCount: number;
-  onCartOpen: () => void;
-}) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <header className="glass-surface fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <button
-          className="flex items-center gap-2 font-display text-lg font-semibold tracking-normal text-[var(--foreground)]"
-          type="button"
-          onClick={() => scrollToSection(content.brand.href)}
-        >
-          <PawPrint className="h-5 w-5 text-[var(--primary)]" aria-hidden="true" />
-          {content.brand.name}
-        </button>
-        <nav className="hidden items-center gap-8 text-sm font-medium text-[color:rgba(32,26,20,0.76)] md:flex">
-          {content.nav.map((item) => (
-            <button
-              key={item.href}
-              className="transition hover:text-[var(--primary)]"
-              type="button"
-              onClick={() => scrollToSection(item.href)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-        <div className="hidden items-center gap-3 md:flex">
-          <button
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-white/45 transition hover:bg-white/75"
-            type="button"
-            onClick={onCartOpen}
-            aria-label="Open cart"
-          >
-            <ShoppingCart className="h-5 w-5 text-[var(--primary)]" aria-hidden="true" />
-            {cartCount > 0 ? (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-xs font-bold text-white">
-                {cartCount}
-              </span>
-            ) : null}
-          </button>
-          <button
-            className="rounded-full bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--primary-hover)]"
-            type="button"
-            onClick={() => scrollToSection("#contact")}
-          >
-            Get updates
-          </button>
-        </div>
-        <div className="flex items-center gap-2 md:hidden">
-          <button
-            aria-label="Open cart"
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-white/45"
-            type="button"
-            onClick={onCartOpen}
-          >
-            <ShoppingCart className="h-5 w-5 text-[var(--primary)]" aria-hidden="true" />
-            {cartCount > 0 ? (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-xs font-bold text-white">
-                {cartCount}
-              </span>
-            ) : null}
-          </button>
-          <button
-            aria-label="Toggle menu"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-white/45 text-[var(--foreground)]"
-            type="button"
-            onClick={() => setOpen((value) => !value)}
-          >
-            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
-          </button>
-        </div>
-      </div>
-      {open ? (
-        <nav className="border-t border-[var(--border)] bg-[color:rgba(247,245,240,0.96)] px-5 py-4 md:hidden">
-          {content.nav.map((item) => (
-            <button
-              key={item.href}
-              className="block py-2.5 text-left text-sm font-semibold text-[color:rgba(32,26,20,0.78)]"
-              type="button"
-              onClick={() => {
-                scrollToSection(item.href);
-                setOpen(false);
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-          <button
-            className="mt-3 inline-flex rounded-full bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-white"
-            type="button"
-            onClick={() => {
-              scrollToSection("#contact");
-              setOpen(false);
-            }}
-          >
-            Get updates
-          </button>
-        </nav>
-      ) : null}
-    </header>
-  );
-}
-
 function HeroSection({ content }: ContentProps) {
   const { hero } = content;
 
   return (
     <section
       id="top"
-      className="relative overflow-hidden px-5 pb-20 pt-32"
+      className="relative overflow-hidden px-5 pb-20 pt-20"
       style={{
         background:
           "radial-gradient(120% 90% at 80% 0%, #ece7de 0%, #f7f5f0 55%, #f7f5f0 100%)",
@@ -316,9 +236,20 @@ function ProductSectionCards({
   return (
     <section id={sectionId ?? section.id} className="px-5 py-20">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{section.heading}</h2>
-          <p className="mt-3 leading-7 text-[var(--muted-foreground)]">{section.body}</p>
+        <div className="flex flex-wrap items-end justify-between gap-5">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{section.heading}</h2>
+            <p className="mt-3 leading-7 text-[var(--muted-foreground)]">{section.body}</p>
+          </div>
+          {variant === "family" ? (
+            <Link
+              className="inline-flex items-center rounded-full border border-[var(--border)] px-5 py-3 text-sm font-bold text-[var(--primary)] transition hover:bg-[var(--card)]"
+              href="/products"
+            >
+              Browse products
+              <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+            </Link>
+          ) : null}
         </div>
         <div className={`mt-12 grid gap-5 ${gridClass}`}>
           {section.products.map((product, index) => (
@@ -379,15 +310,23 @@ function ProductCard({
         <h3 className="mt-1 text-xl font-bold">{product.name}</h3>
         <p className="mt-2 flex-1 text-sm leading-6 text-[var(--muted-foreground)]">{product.description}</p>
         <div className="mt-5 flex items-center justify-between gap-4">
-          <span className="text-lg font-bold text-[var(--primary)]">{product.role}</span>
-          <button
-            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
-            type="button"
-            onClick={() => onAddToCart(product)}
-          >
-            <Plus className="h-4 w-4" aria-hidden="true" />
-            Add
-          </button>
+          <span className="font-display text-xl font-bold text-[var(--primary)]">{formatUsd(product.priceUsd)}</span>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link
+              className="inline-flex items-center rounded-full border border-[var(--border)] px-4 py-2 text-sm font-bold text-[var(--primary)] transition hover:bg-[var(--card)]"
+              href={`/products/${product.id}`}
+            >
+              Details
+            </Link>
+            <button
+              className="inline-flex items-center gap-1 rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
+              type="button"
+              onClick={() => onAddToCart(product)}
+            >
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </article>
@@ -502,29 +441,21 @@ function UpdatesSection({ content }: ContentProps) {
   );
 }
 
-function SiteFooter({ content }: ContentProps) {
-  return (
-    <footer className="border-t border-[var(--border)] px-5">
-      <div className="mx-auto flex max-w-6xl items-center gap-2 py-8 text-sm text-[var(--muted-foreground)]">
-        <PawPrint className="h-4 w-4 text-[var(--primary)]" aria-hidden="true" />
-        <span>{content.footer.body}</span>
-      </div>
-    </footer>
-  );
-}
-
 function CartDrawer({
   cartItems,
   onClose,
+  onQuantityChange,
   onRemove,
   open,
 }: {
-  cartItems: CartItem[];
+  cartItems: StoredCartItem[];
   onClose: () => void;
+  onQuantityChange: (id: string, quantity: number) => void;
   onRemove: (id: string) => void;
   open: boolean;
 }) {
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = getCartItemCount(cartItems);
+  const totalPrice = cartItems.reduce((total, item) => total + getItemPrice(item) * item.quantity, 0);
 
   if (!open) return null;
 
@@ -558,22 +489,67 @@ function CartDrawer({
               {cartItems.map((item) => (
                 <article
                   key={item.id}
-                  className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--border)] bg-white/70 p-4"
+                  className="grid grid-cols-[4.5rem_1fr] gap-4 rounded-2xl border border-[var(--border)] bg-white/70 p-4"
                 >
-                  <div>
-                    <h3 className="font-bold">{item.name}</h3>
-                    <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-                      {item.role} · Qty {item.quantity}
-                    </p>
+                  <div className="flex h-[4.5rem] w-[4.5rem] items-center justify-center overflow-hidden rounded-2xl bg-[var(--card)]">
+                    {item.image ? (
+                      <Image
+                        alt={item.image.alt}
+                        className="h-full w-full object-cover"
+                        height={item.image.height}
+                        src={item.image.src}
+                        width={item.image.width}
+                      />
+                    ) : (
+                      <ShoppingCart className="h-6 w-6 text-[var(--primary)]" aria-hidden="true" />
+                    )}
                   </div>
-                  <button
-                    aria-label={`Remove ${item.name}`}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--card)] text-[var(--primary)] transition hover:bg-[var(--accent)]"
-                    type="button"
-                    onClick={() => onRemove(item.id)}
-                  >
-                    <Trash2 className="h-4 w-4" aria-hidden="true" />
-                  </button>
+                  <div className="min-w-0">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="font-bold">{item.name}</h3>
+                        <p className="mt-1 text-sm text-[var(--muted-foreground)]">{item.role}</p>
+                        <p className="mt-2 text-sm font-bold text-[var(--primary)]">{formatUsd(getItemPrice(item))}</p>
+                      </div>
+                      <button
+                        aria-label={`Remove ${item.name}`}
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--card)] text-[var(--primary)] transition hover:bg-[var(--accent)]"
+                        type="button"
+                        onClick={() => onRemove(item.id)}
+                      >
+                        <Trash2 className="h-4 w-4" aria-hidden="true" />
+                      </button>
+                    </div>
+                    <div className="mt-3 flex items-center justify-between gap-3">
+                      <Link
+                        className="text-sm font-bold text-[var(--primary)] underline-offset-4 hover:underline"
+                        href={`/products/${item.slug}`}
+                        onClick={onClose}
+                      >
+                        View details
+                      </Link>
+                      <div className="flex items-center rounded-full border border-[var(--border)] bg-[var(--background)]">
+                        <button
+                          aria-label={`Decrease ${item.name} quantity`}
+                          className="flex h-8 w-8 items-center justify-center text-[var(--primary)]"
+                          type="button"
+                          onClick={() => onQuantityChange(item.id, item.quantity - 1)}
+                        >
+                          <Minus className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                        <span className="min-w-8 text-center text-sm font-bold">{item.quantity}</span>
+                        <button
+                          aria-label={`Increase ${item.name} quantity`}
+                          className="flex h-8 w-8 items-center justify-center text-[var(--primary)]"
+                          type="button"
+                          onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+                        >
+                          <Plus className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                      </div>
+                      <p className="text-sm font-bold">{formatUsd(getItemPrice(item) * item.quantity)}</p>
+                    </div>
+                  </div>
                 </article>
               ))}
             </div>
@@ -593,6 +569,13 @@ function CartDrawer({
             <span className="text-[var(--muted-foreground)]">Items</span>
             <span className="font-bold">{totalItems}</span>
           </div>
+          <div className="mt-2 flex items-center justify-between text-sm">
+            <span className="text-[var(--muted-foreground)]">Total</span>
+            <span className="font-display text-2xl font-bold text-[var(--primary)]">{formatUsd(totalPrice)}</span>
+          </div>
+          <p className="mt-3 text-xs leading-5 text-[var(--muted-foreground)]">
+            Your selection is saved on this browser for a smoother return visit.
+          </p>
           <button
             className="mt-4 w-full rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
             type="button"
@@ -609,140 +592,3 @@ function CartDrawer({
   );
 }
 
-function FloatingActions() {
-  const [chatOpen, setChatOpen] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      from: "bot",
-      text: "Hi, I can help with Pura Max 2 specs, product fit, and PETKIT care routines.",
-    },
-  ]);
-  const [input, setInput] = useState("");
-
-  useEffect(() => {
-    const updateBackToTopVisibility = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-
-      setShowBackToTop(progress > 0.2);
-    };
-
-    updateBackToTopVisibility();
-    window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
-    window.addEventListener("resize", updateBackToTopVisibility);
-
-    return () => {
-      window.removeEventListener("scroll", updateBackToTopVisibility);
-      window.removeEventListener("resize", updateBackToTopVisibility);
-    };
-  }, []);
-
-  const handleSend = (event?: FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-
-    const text = input.trim();
-    if (!text) return;
-
-    setMessages((current) => [
-      ...current,
-      { from: "user", text },
-      {
-        from: "bot",
-        text: "Thanks for your message. A PETKIT team member will contact you as soon as possible.",
-      },
-    ]);
-    setInput("");
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  return (
-    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3">
-      {chatOpen ? (
-        <section className="glass-surface flex h-[26rem] w-[min(20rem,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl shadow-[0_24px_70px_-32px_rgba(32,26,20,0.55)]">
-          <div className="flex items-center justify-between border-b border-[var(--border)] bg-[color:rgba(247,245,240,0.72)] px-4 py-3">
-            <div>
-              <p className="text-sm font-bold text-[var(--foreground)]">PETKIT Assistant</p>
-              <p className="text-xs text-[var(--muted-foreground)]">Product guidance</p>
-            </div>
-            <button
-              aria-label="Close chat"
-              className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--muted-foreground)] transition hover:bg-white/70 hover:text-[var(--foreground)]"
-              type="button"
-              onClick={() => setChatOpen(false)}
-            >
-              <X className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </div>
-
-          <div className="flex-1 space-y-3 overflow-y-auto p-4">
-            {messages.map((message, index) => (
-              <div
-                key={`${message.from}-${index}`}
-                className={[
-                  "max-w-[82%] rounded-2xl px-3 py-2 text-sm leading-5",
-                  message.from === "bot"
-                    ? "bg-[var(--card)] text-[var(--foreground)]"
-                    : "ml-auto bg-[var(--primary)] text-white",
-                ].join(" ")}
-              >
-                {message.text}
-              </div>
-            ))}
-          </div>
-
-          <form
-            className="flex items-center gap-2 border-t border-[var(--border)] bg-[color:rgba(247,245,240,0.72)] p-3"
-            onSubmit={handleSend}
-          >
-            <label className="flex-1">
-              <span className="sr-only">Message</span>
-              <input
-                className="w-full rounded-full border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm outline-none transition focus:border-[var(--primary)]"
-                placeholder="Ask about PETKIT..."
-                type="text"
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-              />
-            </label>
-            <button
-              aria-label="Send message"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--primary)] text-white transition hover:bg-[var(--primary-hover)]"
-              type="submit"
-            >
-              <Send className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </form>
-        </section>
-      ) : null}
-
-      <div className="flex items-center gap-3">
-        {showBackToTop ? (
-          <button
-            aria-label="Back to top"
-            className="glass-surface flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition hover:scale-105"
-            type="button"
-            onClick={scrollToTop}
-          >
-            <ChevronUp className="h-5 w-5 text-[var(--primary)]" aria-hidden="true" />
-          </button>
-        ) : null}
-        <button
-          aria-label={chatOpen ? "Close chat" : "Open chat"}
-          className="glass-surface flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition hover:scale-105"
-          type="button"
-          onClick={() => setChatOpen((value) => !value)}
-        >
-          {chatOpen ? (
-            <X className="h-6 w-6 text-[var(--primary)]" aria-hidden="true" />
-          ) : (
-            <MessageCircle className="h-6 w-6 text-[var(--primary)]" aria-hidden="true" />
-          )}
-        </button>
-      </div>
-    </div>
-  );
-}

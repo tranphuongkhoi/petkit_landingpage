@@ -23,6 +23,8 @@ const productCardSchema = z.object({
   badge: z.string(),
   description: z.string(),
   image: imageSchema,
+  priceUsd: z.number(),
+  regularPriceUsd: z.number().optional(),
   specs: z.array(statSchema),
   fit: z.string(),
 });
