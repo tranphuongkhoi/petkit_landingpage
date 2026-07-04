@@ -185,11 +185,19 @@ export function FloatingActions() {
         },
         method: "POST",
       });
-      const data = (await response.json()) as { reply?: string };
+      const data = (await response.json()) as {
+        error?: string;
+        fallbackAvailable?: boolean;
+        reply?: string;
+      };
 
       const reply = data.reply;
 
-      if (!response.ok || !reply) throw new Error("Assistant unavailable");
+      if (!response.ok || !reply) {
+        const error = new Error(data.error ?? "Assistant unavailable");
+        error.name = data.fallbackAvailable ? "AssistantFallbackAvailable" : "AssistantUnavailable";
+        throw error;
+      }
 
       setMessages((current) => [
         ...current,
@@ -199,7 +207,14 @@ export function FloatingActions() {
       console.error("Assistant message failed", error);
       setMessages((current) => [
         ...current,
-        { from: "bot", text: dictionary.assistant.unavailable },
+        {
+          from: "bot",
+          text:
+            error instanceof Error &&
+            error.name === "AssistantFallbackAvailable"
+              ? getModelFallbackText(locale)
+              : dictionary.assistant.unavailable,
+        },
       ]);
     } finally {
       setSubmitting(false);
@@ -462,6 +477,12 @@ function getLeadSubmitErrorText(locale: "en" | "vi") {
   return locale === "vi"
     ? "Mình chưa lưu được thông tin lúc này. Vui lòng thử lại sau ít phút."
     : "I could not save the details yet. Please try again in a moment.";
+}
+
+function getModelFallbackText(locale: "en" | "vi") {
+  return locale === "vi"
+    ? "Model chính đang đạt giới hạn. Hệ thống có thể chuyển sang model dự phòng để tiếp tục trả lời; vui lòng thử gửi lại câu hỏi sau vài giây."
+    : "The primary model is currently rate-limited. The assistant can switch to a backup model; please try your question again in a few seconds.";
 }
 
 async function submitLead(
