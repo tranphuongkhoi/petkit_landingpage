@@ -16,6 +16,8 @@ type StoredWishlistItem = {
   name?: string;
 };
 
+type WishlistEntry = string | StoredWishlistItem;
+
 function cleanAssistantText(value: string) {
   return value
     .replace(/\*\*(.*?)\*\*/g, "$1")
@@ -286,38 +288,82 @@ function getAssistantContext() {
       quantity: item.quantity,
     }),
   );
-  const saved = readStoredArray<StoredWishlistItem>(
+  const saved = readStoredArray<WishlistEntry>(
     STORAGE_KEYS.wishlist,
     [],
   ).map((item) => {
-    const product = productCatalog.find((entry) => entry.id === item.id);
+    const id = typeof item === "string" ? item : item.id;
+    const name = typeof item === "string" ? undefined : item.name;
+    const product = productCatalog.find((entry) => entry.id === id);
 
     return {
-      name: item.name ?? product?.name ?? item.id,
+      name: name ?? product?.name ?? id,
     };
   });
 
   return {
     cart,
-    page: window.location.pathname || "/",
+    page: getCurrentPageLabel(),
     saved,
   };
+}
+
+function getCurrentPageLabel() {
+  const pathname = window.location.pathname || "/";
+
+  if (pathname === "/") return "Landing page";
+  if (pathname === "/products") return "Product listing";
+
+  const product = productCatalog.find(
+    (entry) => pathname === `/products/${entry.slug}`,
+  );
+
+  if (product) return `Product detail: ${product.name}`;
+
+  return pathname;
+}
+
+function extractLeadContact(message: string) {
+  const email = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0];
+  if (!email) return null;
+
+  const beforeEmail = message
+    .slice(0, message.indexOf(email))
+    .replace(/(?:,?\s*(?:còn|and)?\s*(?:email|mail|địa chỉ email)\s*(?:là|is|:)?\s*)$/i, "");
+  const namePatterns = [
+    /(?:tên(?:\s+của)?\s+(?:tôi|mình|em)?\s*(?:là)?|mình\s+là|tôi\s+là|em\s+là|toi\s+la|ten\s+toi\s+la|my\s+name\s+is|i\s+am|i'm)\s+([^,.;\n]+)$/i,
+    /^([^,.;\n]+?)(?:\s*,?\s*(?:còn|email|mail|and|,)\s*)?$/i,
+  ];
+
+  for (const pattern of namePatterns) {
+    const match = beforeEmail.match(pattern);
+    const candidate = normalizeLeadName(match?.[1] ?? "");
+
+    if (candidate) return { email, name: candidate };
+  }
+
+  return null;
+}
+
+function normalizeLeadName(value: string) {
+  const cleaned = value
+    .replace(/^(?:tên(?:\s+của)?\s+(?:tôi|mình|em)?|ten\s+toi|name|my\s+name)\s*/i, " ")
+    .replace(/\b(?:còn|email|mail|and|is|là|la)\b/gi, " ")
+    .replace(/[:：]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (cleaned.length < 2) return "";
+
+  return cleaned.slice(0, 80);
 }
 
 async function submitLeadFromMessage(
   message: string,
   submittedLeadRef: { current: string | null },
 ) {
-  const email = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0];
-  if (!email) return;
-
-  const nameCandidate = message
-    .replace(email, " ")
-    .replace(/(?:my name is|i am|i'm|toi la|tôi là|ten toi la|tên tôi là|name|email|mail|là|:)/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  const name = nameCandidate.length >= 2 ? nameCandidate.slice(0, 80) : "";
-  if (!name) return;
+  const leadContact = extractLeadContact(message);
+  if (!leadContact) return;
 
   const context = getAssistantContext();
   const productName =
@@ -328,7 +374,7 @@ async function submitLeadFromMessage(
       : context.saved.length > 0
         ? `Saved: ${context.saved.map((item) => item.name).join(", ")}`
         : "PETKIT product updates";
-  const signature = `${email.toLowerCase()}|${name.toLowerCase()}|${productName}`;
+  const signature = `${leadContact.email.toLowerCase()}|${leadContact.name.toLowerCase()}|${productName}`;
 
   if (submittedLeadRef.current === signature) return;
   submittedLeadRef.current = signature;
@@ -339,15 +385,15 @@ async function submitLeadFromMessage(
 
   await fetch("/api/events", {
     body: JSON.stringify({
-      email,
+      email: leadContact.email,
       eventType: "lead_submit",
       metadata: {
         action: "assistant_lead",
         cartItems: context.cart.length,
         savedItems: context.saved.length,
       },
-      name,
-      page: window.location.pathname || "/",
+      name: leadContact.name,
+      page: context.page,
       productName,
       scrollDepth,
     }),

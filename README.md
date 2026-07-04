@@ -1,37 +1,92 @@
-# PETKIT Smart Cat Care Landing Page
+# PETKIT Smart Cat Care
 
-Responsive product landing page project for PETKIT smart cat care products, prepared for the HeLiCorp IT Website Internship round 2 test.
+Responsive PETKIT product experience built for the HeLiCorp IT Website Internship round 2 assessment.
 
-## Current Status
+## Links
 
-The landing page is ready for preview review. It includes the main product narrative, supporting product cards, cart interaction, floating assistance UI, responsive layout, and Vercel Web Analytics integration.
+- Repository: https://github.com/tranphuongkhoi/petkit_landingpage
+- Production: https://helicorp-petkit.vercel.app
+- Preview: generated from the `preview` branch on Vercel
 
-## Planned V1 Scope
+## Overview
 
-- Responsive landing page with hero, features, specs, ecosystem, and signup form.
-- Product ecosystem around PETKIT Pura Max 2, YumShare Solo, and Eversweet Max 2.
-- Product listing and static product detail pages.
-- SEO metadata and PageSpeed-focused implementation.
-- Optional enhancements: server-side lead capture, GTM/GA4 tracking, dark mode, and wishlist persistence.
+This project presents a PETKIT smart cat care storefront centered on Pura Max 2. It includes a landing page, product listing, product detail pages, comparison content, cart and saved-product interactions, bilingual UI, dark/light mode, and a floating product assistant.
 
-## Development
+## Features
+
+- Responsive landing page with hero, features, technical specs, product family, ecosystem add-ons, and update form.
+- Product listing and static product detail pages for PETKIT products.
+- Product comparison tables grouped by product role.
+- Cart drawer with saved quantity, price totals, and update request form.
+- Saved products and recently viewed product context.
+- English/Vietnamese toggle with component-scoped locale files.
+- Dark/light mode with persisted preference.
+- Server-side lead event route for n8n webhook delivery.
+- Groq-powered PETKIT assistant grounded in project product data, cart items, and saved products.
+- Vercel Web Analytics integration.
+
+## Tech Stack
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- Vercel Analytics
+- n8n webhook integration
+- Groq chat completion API
+
+## Local Development
 
 ```bash
 npm install
 npm run dev
 ```
 
+Open http://localhost:3000.
+
+## Environment Variables
+
+Create `.env.local` from `.env.example`.
+
+```bash
+N8N_WEBHOOK_URL=
+INTERNAL_TRACKING_SECRET=
+GROQ_API_KEY=
+GROQ_MODEL=
+```
+
+`GROQ_MODEL` is optional. Local secrets and private notes are ignored by Git.
+
 ## Verification
 
 ```bash
 npm run lint
+npm run typecheck
 npm run build
 ```
 
-## Environment
+## Routes
 
-Copy `.env.example` to `.env.local` for local secrets. Do not commit `.env.local`.
+- `/`
+- `/products`
+- `/products/puramax-2`
+- `/products/purobot-max-pro-2`
+- `/products/purobot-crystal-duo`
+- `/products/yumshare-solo`
+- `/products/eversweet-max-2`
 
-## Repository Safety
+## Evidence
 
-Local notes, API keys, private screenshots, and environment files must not be committed.
+Submission evidence will be added after final preview review.
+
+Planned evidence:
+
+- Production screenshot
+- Responsive preview screenshots
+- PageSpeed or Lighthouse result
+- Lead form webhook proof
+- Optional analytics proof
+
+## Notes
+
+Pricing is presented as reference display data. Final availability, pricing, warranty, and distributor details can vary by market.
