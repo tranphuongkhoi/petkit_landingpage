@@ -31,7 +31,7 @@ This project presents a PETKIT smart cat care storefront centered on Pura Max 2.
 - Dark/light mode with persisted preference.
 - Server-side lead event route for n8n webhook delivery.
 - Groq-powered PETKIT assistant grounded in project product data, cart items, and saved products.
-- OpenRouter backup model support for assistant fallback when the primary model is rate-limited.
+- OpenRouter backup model support with Qwen and NVIDIA models when the primary Groq model is rate-limited.
 - Vercel Web Analytics integration.
 - SEO baseline with metadata, canonical URLs, `robots.txt`, and `sitemap.xml`.
 
@@ -71,6 +71,16 @@ OPENROUTER_MODEL_FALLBACK=nvidia/nemotron-3-nano-30b-a3b:free
 
 `GROQ_MODEL`, `OPENROUTER_MODEL_PRIMARY`, and `OPENROUTER_MODEL_FALLBACK` are optional overrides. Local secrets and private notes are ignored by Git.
 
+For Vercel, keep Groq as the primary provider and add only the OpenRouter fallback variables when needed:
+
+```bash
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL_PRIMARY=qwen/qwen3-next-80b-a3b-instruct:free
+OPENROUTER_MODEL_FALLBACK=nvidia/nemotron-3-nano-30b-a3b:free
+```
+
+`ASSISTANT_PROVIDER=openrouter` is available for local fallback testing only. It should be left unset in Preview and Production so the assistant uses Groq first and falls back to OpenRouter only if needed.
+
 ## Verification
 
 ```bash
@@ -92,6 +102,24 @@ npm run build
 - `/sitemap.xml`
 
 ## Evidence
+
+### Demo Video
+
+Place the final demo video at:
+
+```txt
+docs/assets/demo/petkit-demo.mp4
+```
+
+After adding the file, the video can be previewed directly from the README:
+
+<video src="docs/assets/demo/petkit-demo.mp4" controls width="720">
+  Your browser does not support the video tag.
+</video>
+
+If GitHub does not render the video in a specific context, open the file directly from `docs/assets/demo/`.
+
+### Screenshots
 
 ![PageSpeed desktop result](docs/assets/pagespeed-desktop.png)
 
