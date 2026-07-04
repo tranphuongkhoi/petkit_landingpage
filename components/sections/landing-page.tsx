@@ -17,13 +17,29 @@ import {
   Wind,
   X,
 } from "lucide-react";
+import { UpdateInterestForm } from "@/components/forms/form";
+import {
+  CategoryLabel,
+  LocalizedPrice,
+  ProductDescription,
+  ProductLabel,
+  ProductSectionText,
+  RoleLabel,
+  SpecLabel,
+} from "@/components/i18n/localized-product-text";
 import { FloatingActions } from "@/components/floating-actions";
 import { SiteFooter, SiteHeader } from "@/components/layout";
-import { CART_STORAGE_KEY, CART_UPDATED_EVENT, getCartItemCount, getItemPrice, type StoredCartItem } from "@/lib/cart-storage";
+import {
+  CART_STORAGE_KEY,
+  CART_UPDATED_EVENT,
+  getCartItemCount,
+  getItemPrice,
+  type StoredCartItem,
+} from "@/lib/cart-storage";
 import type { LandingFeature, LandingStat } from "@/types/landing";
 import type { ProductCardData, ProductSectionData } from "@/types/product-foundation";
-import { formatUsd } from "@/lib/product-catalog";
 import type { ContentProps, LandingPageProps, ProductFoundationProps } from "@/types/section-props";
+import { useAppPreferences } from "@/components/providers/app-preferences";
 
 export function LandingPage({ content, productFoundation }: LandingPageProps) {
   const [cartOpen, setCartOpen] = useState(false);
@@ -102,7 +118,7 @@ export function LandingPage({ content, productFoundation }: LandingPageProps) {
       <SpecsSection content={content} />
       <ProductFamilySection onAddToCart={addToCart} productFoundation={productFoundation} />
       <ProductSectionCards onAddToCart={addToCart} section={productFoundation.ecosystem} variant="wide" />
-      <UpdatesSection content={content} />
+      <UpdatesSection cartItems={cartItems} content={content} />
       <SiteFooter body={content.footer.body} />
       <CartDrawer
         cartItems={cartItems}
@@ -131,33 +147,31 @@ function scrollToSection(target: string) {
 }
 
 function HeroSection({ content }: ContentProps) {
+  const { dictionary } = useAppPreferences();
   const { hero } = content;
 
   return (
     <section
       id="top"
       className="relative overflow-hidden px-5 pb-20 pt-20"
-      style={{
-        background:
-          "radial-gradient(120% 90% at 80% 0%, #ece7de 0%, #f7f5f0 55%, #f7f5f0 100%)",
-      }}
+      style={{ background: "var(--hero-bg)" }}
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div>
           <p className="inline-flex rounded-full border border-[var(--border)] bg-[var(--glass)] px-3 py-1 text-xs font-bold uppercase text-[var(--primary)]">
-            Smart Cat Care
+            {dictionary.landing.hero.eyebrow}
           </p>
           <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-[var(--foreground)] sm:text-5xl lg:text-6xl">
-            {hero.headline}
+            {dictionary.landing.hero.headline}
           </h1>
-          <p className="mt-5 max-w-md text-lg leading-8 text-[var(--muted-foreground)]">{hero.body}</p>
+          <p className="mt-5 max-w-md text-lg leading-8 text-[var(--muted-foreground)]">{dictionary.landing.hero.body}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <button
               className="inline-flex items-center rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--primary-hover)]"
               type="button"
               onClick={() => scrollToSection(hero.primaryCta.href)}
             >
-              {hero.primaryCta.label}
+              {dictionary.landing.hero.primaryCta}
               <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
             </button>
             <button
@@ -165,7 +179,7 @@ function HeroSection({ content }: ContentProps) {
               type="button"
               onClick={() => scrollToSection(hero.secondaryCta.href)}
             >
-              {hero.secondaryCta.label}
+              {dictionary.landing.hero.secondaryCta}
             </button>
           </div>
 
@@ -173,7 +187,7 @@ function HeroSection({ content }: ContentProps) {
             {hero.visual.stats.map((stat) => (
               <div key={stat.label} className="glass-surface rounded-2xl px-5 py-3 shadow-sm">
                 <dd className="text-2xl font-bold text-[var(--primary)]">{stat.value}</dd>
-                <dt className="mt-1 text-xs text-[var(--muted-foreground)]">{stat.label}</dt>
+                <dt className="mt-1 text-xs text-[var(--muted-foreground)]">{(dictionary.landing.hero.stats as Record<string, string> | undefined)?.[stat.label] ?? stat.label}</dt>
               </div>
             ))}
           </dl>
@@ -238,15 +252,25 @@ function ProductSectionCards({
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{section.heading}</h2>
-            <p className="mt-3 leading-7 text-[var(--muted-foreground)]">{section.body}</p>
+            <h2 className="text-3xl font-bold leading-tight sm:text-4xl">
+              <ProductSectionText
+                fallback={section.heading}
+                value={section.id === "ecosystem" ? "ecosystemHeading" : "litterBoxHeading"}
+              />
+            </h2>
+            <p className="mt-3 leading-7 text-[var(--muted-foreground)]">
+              <ProductSectionText
+                fallback={section.body}
+                value={section.id === "ecosystem" ? "ecosystemBody" : "litterBoxBody"}
+              />
+            </p>
           </div>
           {variant === "family" ? (
             <Link
               className="inline-flex items-center rounded-full border border-[var(--border)] px-5 py-3 text-sm font-bold text-[var(--primary)] transition hover:bg-[var(--card)]"
               href="/products"
             >
-              Browse products
+              <ProductLabel value="browseProducts" />
               <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
           ) : null}
@@ -275,6 +299,8 @@ function ProductCard({
   onAddToCart: (product: ProductCardData) => void;
   product: ProductCardData;
 }) {
+  const { dictionary } = useAppPreferences();
+
   return (
     <article
       className={[
@@ -282,10 +308,10 @@ function ProductCard({
         featured ? "border-[var(--primary)]" : "border-[var(--border)]",
       ].join(" ")}
     >
-      <div className="relative flex min-h-[238px] items-center justify-center bg-[color:rgba(201,185,156,0.4)] p-6">
+      <div className="relative flex min-h-[238px] items-center justify-center bg-[var(--image-panel)] p-6">
         {featured ? (
           <span className="absolute left-4 top-4 rounded-full bg-[var(--primary)] px-3 py-1 text-xs font-bold text-white">
-            Flagship
+            <RoleLabel value="Flagship" />
           </span>
         ) : null}
         {product.image ? (
@@ -303,20 +329,24 @@ function ProductCard({
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col border-t border-[var(--border)] bg-[color:rgba(255,255,255,0.42)] p-5">
+      <div className="flex flex-1 flex-col border-t border-[var(--border)] bg-[var(--soft-panel)] p-5">
         <p className="text-xs font-bold uppercase text-[var(--muted-foreground)]">
-          {product.category} - {product.model}
+          <CategoryLabel value={product.category} /> - {product.model}
         </p>
         <h3 className="mt-1 text-xl font-bold">{product.name}</h3>
-        <p className="mt-2 flex-1 text-sm leading-6 text-[var(--muted-foreground)]">{product.description}</p>
+        <p className="mt-2 flex-1 text-sm leading-6 text-[var(--muted-foreground)]">
+          <ProductDescription fallback={product.description} productId={product.id} />
+        </p>
         <div className="mt-5 flex items-center justify-between gap-4">
-          <span className="font-display text-xl font-bold text-[var(--primary)]">{formatUsd(product.priceUsd)}</span>
+          <span className="font-display text-xl font-bold text-[var(--primary)]">
+            <LocalizedPrice value={product.priceUsd} />
+          </span>
           <div className="flex shrink-0 items-center gap-2">
             <Link
               className="inline-flex items-center rounded-full border border-[var(--border)] px-4 py-2 text-sm font-bold text-[var(--primary)] transition hover:bg-[var(--card)]"
               href={`/products/${product.id}`}
             >
-              Details
+              {dictionary.common.details}
             </Link>
             <button
               className="inline-flex items-center gap-1 rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
@@ -324,7 +354,7 @@ function ProductCard({
               onClick={() => onAddToCart(product)}
             >
               <Plus className="h-4 w-4" aria-hidden="true" />
-              Add
+              {dictionary.common.add}
             </button>
           </div>
         </div>
@@ -334,6 +364,7 @@ function ProductCard({
 }
 
 function SpecsSection({ content }: ContentProps) {
+  const { dictionary } = useAppPreferences();
   const product = content.primaryProduct;
   const specs = product.stats.slice(0, 4);
 
@@ -341,9 +372,9 @@ function SpecsSection({ content }: ContentProps) {
     <section id="specs" className="px-5 py-20">
       <div className="mx-auto max-w-6xl rounded-[2rem] bg-[var(--card)] p-8 sm:p-12">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold leading-tight sm:text-4xl">Technical at a glance</h2>
+          <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{dictionary.landing.specs.heading}</h2>
           <p className="mt-3 leading-7 text-[var(--muted-foreground)]">
-            Production-ready hardware specs for the {product.name} ({product.model}).
+            {dictionary.landing.specs.body}
           </p>
         </div>
         <StatsGrid stats={specs} />
@@ -358,7 +389,9 @@ function StatsGrid({ stats }: { stats: LandingStat[] }) {
       {stats.map((stat) => (
         <div key={stat.label} className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-6">
           <dd className="text-3xl font-bold leading-tight text-[var(--primary)]">{stat.value}</dd>
-          <dt className="mt-1 text-sm text-[var(--muted-foreground)]">{stat.label}</dt>
+          <dt className="mt-1 text-sm text-[var(--muted-foreground)]">
+            <SpecLabel value={stat.label} />
+          </dt>
         </div>
       ))}
     </dl>
@@ -366,14 +399,15 @@ function StatsGrid({ stats }: { stats: LandingStat[] }) {
 }
 
 function FeaturesSection({ content }: ContentProps) {
+  const { dictionary } = useAppPreferences();
   const product = content.primaryProduct;
 
   return (
     <section id="features" className="px-5 py-20">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{product.heading}</h2>
-          <p className="mt-3 leading-7 text-[var(--muted-foreground)]">{product.body}</p>
+          <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{dictionary.landing.features.heading}</h2>
+          <p className="mt-3 leading-7 text-[var(--muted-foreground)]">{dictionary.landing.features.body}</p>
         </div>
         <FeatureList features={product.features} />
       </div>
@@ -382,6 +416,7 @@ function FeaturesSection({ content }: ContentProps) {
 }
 
 function FeatureList({ features }: { features: LandingFeature[] }) {
+  const { dictionary } = useAppPreferences();
   const icons = [Sparkles, ShieldCheck, Smartphone, Wind, Cat, Recycle];
 
   return (
@@ -397,8 +432,14 @@ function FeatureList({ features }: { features: LandingFeature[] }) {
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/70">
               <Icon className="h-5 w-5 text-[var(--primary)]" aria-hidden="true" />
             </div>
-            <h3 className="mt-4 text-lg font-bold">{feature.title}</h3>
-            <p className="mt-3 text-sm leading-6 text-[var(--muted-foreground)]">{feature.body}</p>
+            <h3 className="mt-4 text-lg font-bold">
+              {dictionary.landing.features.items[feature.title as keyof typeof dictionary.landing.features.items]?.title ??
+                feature.title}
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--muted-foreground)]">
+              {dictionary.landing.features.items[feature.title as keyof typeof dictionary.landing.features.items]?.body ??
+                feature.body}
+            </p>
           </article>
         );
       })}
@@ -406,37 +447,15 @@ function FeatureList({ features }: { features: LandingFeature[] }) {
   );
 }
 
-function UpdatesSection({ content }: ContentProps) {
+function UpdatesSection({ cartItems, content }: ContentProps & { cartItems: StoredCartItem[] }) {
   const updates = content.updates;
 
   return (
     <section id={updates.id} className="px-5 py-20">
-      <div className="mx-auto max-w-3xl rounded-[2rem] bg-[var(--card)] p-8 text-center sm:p-12">
-        <div>
-          <h2 className="text-3xl font-bold leading-tight sm:text-4xl">{updates.heading}</h2>
-          <p className="mx-auto mt-3 max-w-md leading-7 text-[var(--muted-foreground)]">{updates.body}</p>
-        </div>
-        <form className="mx-auto mt-8 flex max-w-md flex-col gap-3 text-left">
-          {updates.fields.map((field) => (
-            <label key={field.name}>
-              <span className="sr-only">{field.label}</span>
-              <input
-                className="w-full rounded-xl border border-[color:rgba(32,26,20,0.2)] bg-[var(--background)] px-4 py-3 text-base font-normal outline-none transition focus:border-[var(--primary)]"
-                name={field.name}
-                placeholder={field.placeholder}
-                type={field.type}
-              />
-            </label>
-          ))}
-          <button
-            className="w-full rounded-xl bg-[var(--primary)] px-6 py-3 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
-            type="button"
-          >
-            {updates.submitLabel}
-          </button>
-        </form>
-        <p className="mx-auto mt-5 max-w-md text-sm leading-6 text-[var(--muted-foreground)]">{updates.disclaimer}</p>
-      </div>
+      <UpdateInterestForm
+        cartItems={cartItems}
+        pageLabel="Landing page"
+      />
     </section>
   );
 }
@@ -454,6 +473,7 @@ function CartDrawer({
   onRemove: (id: string) => void;
   open: boolean;
 }) {
+  const { dictionary } = useAppPreferences();
   const totalItems = getCartItemCount(cartItems);
   const totalPrice = cartItems.reduce((total, item) => total + getItemPrice(item) * item.quantity, 0);
 
@@ -470,8 +490,8 @@ function CartDrawer({
       <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-[var(--border)] bg-[var(--background)] shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
           <div>
-            <p className="text-sm font-bold uppercase text-[var(--primary)]">Cart</p>
-            <h2 className="text-2xl font-bold">Selected products</h2>
+            <p className="text-sm font-bold uppercase text-[var(--primary)]">{dictionary.cart.title}</p>
+            <h2 className="text-2xl font-bold">{dictionary.cart.selectedProducts}</h2>
           </div>
           <button
             aria-label="Close cart"
@@ -508,8 +528,12 @@ function CartDrawer({
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <h3 className="font-bold">{item.name}</h3>
-                        <p className="mt-1 text-sm text-[var(--muted-foreground)]">{item.role}</p>
-                        <p className="mt-2 text-sm font-bold text-[var(--primary)]">{formatUsd(getItemPrice(item))}</p>
+                        <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                          <RoleLabel value={item.role} />
+                        </p>
+                        <p className="mt-2 text-sm font-bold text-[var(--primary)]">
+                          <LocalizedPrice value={getItemPrice(item)} />
+                        </p>
                       </div>
                       <button
                         aria-label={`Remove ${item.name}`}
@@ -526,7 +550,7 @@ function CartDrawer({
                         href={`/products/${item.slug}`}
                         onClick={onClose}
                       >
-                        View details
+                        {dictionary.common.viewDetails}
                       </Link>
                       <div className="flex items-center rounded-full border border-[var(--border)] bg-[var(--background)]">
                         <button
@@ -547,7 +571,9 @@ function CartDrawer({
                           <Plus className="h-4 w-4" aria-hidden="true" />
                         </button>
                       </div>
-                      <p className="text-sm font-bold">{formatUsd(getItemPrice(item) * item.quantity)}</p>
+                      <p className="text-sm font-bold">
+                        <LocalizedPrice value={getItemPrice(item) * item.quantity} />
+                      </p>
                     </div>
                   </div>
                 </article>
@@ -556,9 +582,9 @@ function CartDrawer({
           ) : (
             <div className="rounded-2xl border border-dashed border-[var(--border)] bg-white/55 p-6 text-center">
               <ShoppingCart className="mx-auto h-8 w-8 text-[var(--primary)]" aria-hidden="true" />
-              <p className="mt-3 font-bold">Your cart is empty</p>
+              <p className="mt-3 font-bold">{dictionary.cart.emptyTitle}</p>
               <p className="mt-2 text-sm leading-6 text-[var(--muted-foreground)]">
-                Add products from the PETKIT lineup to prepare an inquiry list.
+                {dictionary.cart.emptyBody}
               </p>
             </div>
           )}
@@ -566,15 +592,17 @@ function CartDrawer({
 
         <div className="border-t border-[var(--border)] p-5">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[var(--muted-foreground)]">Items</span>
+            <span className="text-[var(--muted-foreground)]">{dictionary.cart.items}</span>
             <span className="font-bold">{totalItems}</span>
           </div>
           <div className="mt-2 flex items-center justify-between text-sm">
-            <span className="text-[var(--muted-foreground)]">Total</span>
-            <span className="font-display text-2xl font-bold text-[var(--primary)]">{formatUsd(totalPrice)}</span>
+            <span className="text-[var(--muted-foreground)]">{dictionary.cart.total}</span>
+            <span className="font-display text-2xl font-bold text-[var(--primary)]">
+              <LocalizedPrice value={totalPrice} />
+            </span>
           </div>
           <p className="mt-3 text-xs leading-5 text-[var(--muted-foreground)]">
-            Your selection is saved on this browser for a smoother return visit.
+            {dictionary.cart.savedNotice}
           </p>
           <button
             className="mt-4 w-full rounded-xl bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
@@ -584,7 +612,7 @@ function CartDrawer({
               scrollToSection("#contact");
             }}
           >
-            Continue to updates
+            {dictionary.cart.continueToUpdates}
           </button>
         </div>
       </aside>
