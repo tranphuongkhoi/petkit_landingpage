@@ -182,10 +182,10 @@ function ProductLink({ filled, product }: { filled?: boolean; product: ProductCa
   return (
     <Link
       className={[
-        "mt-7 inline-flex w-fit items-center text-[0.72rem] font-bold uppercase",
+        "mt-7 inline-flex w-fit items-center text-[0.72rem] font-bold uppercase transition",
         filled
-          ? "rounded-full bg-[var(--foreground)] px-5 py-3 text-white"
-          : "border-b border-[var(--foreground)] pb-1 text-[var(--foreground)]",
+          ? "rounded-full bg-[var(--foreground)] px-5 py-3 text-[var(--background)] shadow-sm shadow-[rgba(0,0,0,0.08)]"
+          : "rounded-full border border-[var(--border)] px-5 py-3 text-[var(--foreground)] hover:bg-[var(--soft-panel)] hover:text-[var(--primary)]",
       ].join(" ")}
       href={`/products/${product.slug}`}
     >

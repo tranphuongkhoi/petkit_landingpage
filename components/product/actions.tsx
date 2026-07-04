@@ -373,26 +373,26 @@ export function CartDrawer({
                       </button>
                     </div>
                     <div className="mt-4 flex items-center justify-between gap-3">
-                      <div className="inline-flex items-center rounded-full border border-[var(--border)] bg-white">
+                      <div className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--card)]">
                         <button
                           aria-label={`Decrease ${item.name}`}
-                          className="flex h-8 w-8 items-center justify-center"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--foreground)] transition hover:bg-[var(--soft-panel)]"
                           type="button"
                           onClick={() => onQuantityChange(item.id, item.quantity - 1)}
                         >
                           <Minus className="h-4 w-4" aria-hidden="true" />
                         </button>
-                        <span className="min-w-8 text-center text-sm font-bold">{item.quantity}</span>
+                        <span className="min-w-8 text-center text-sm font-bold text-[var(--foreground)]">{item.quantity}</span>
                         <button
                           aria-label={`Increase ${item.name}`}
-                          className="flex h-8 w-8 items-center justify-center"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--foreground)] transition hover:bg-[var(--soft-panel)]"
                           type="button"
                           onClick={() => onQuantityChange(item.id, item.quantity + 1)}
                         >
                           <Plus className="h-4 w-4" aria-hidden="true" />
                         </button>
                       </div>
-                      <p className="text-sm font-bold">
+                      <p className="text-sm font-bold text-[var(--foreground)]">
                         <LocalizedPrice value={getItemPrice(item) * item.quantity} />
                       </p>
                     </div>
