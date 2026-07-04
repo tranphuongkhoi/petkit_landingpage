@@ -18,7 +18,7 @@ Responsive PETKIT product experience built for the HeLiCorp IT Website Internshi
 
 ## Overview
 
-This project presents a PETKIT smart cat care storefront centered on Pura Max 2. It includes a landing page, product listing, product detail pages, comparison content, cart and saved-product interactions, bilingual UI, dark/light mode, and a floating product assistant.
+A PETKIT smart cat care storefront built around the Pura Max 2, featuring a landing page, product listing, product detail pages, comparison content, cart and saved-product interactions, bilingual UI, dark/light mode, and a floating product assistant.
 
 ## Features
 
@@ -105,27 +105,36 @@ npm run build
 
 ### Demo Video
 
-Place the final demo video at:
-
-```txt
-docs/assets/demo/petkit-demo.mp4
-```
-
-After adding the file, the video can be previewed directly from the README:
+Video file: `docs/assets/demo/petkit-demo.mp4`
 
 <video src="docs/assets/demo/petkit-demo.mp4" controls width="720">
   Your browser does not support the video tag.
 </video>
 
-If GitHub does not render the video in a specific context, open the file directly from `docs/assets/demo/`.
+**Walkthrough**
+
+| Time | What's happening |
+|---|---|
+| `0:00–0:10` | Trigger a test run of the n8n workflow |
+| `0:10–0:15` | Successful test execution result in n8n |
+| `0:15–0:45` | Clear cache/cookies for a clean run, switch to dark mode, browse the landing page in Vietnamese, then back to English |
+| `0:45–0:50` | Product detail page |
+| `0:50–0:55` | Save a product, shown under Saved + Recently Viewed |
+| `0:55–1:00` | Add a different product to cart, open cart drawer (VND pricing, locale set to Vietnamese) |
+| `1:00–1:13` | Open the assistant in English; its reply reflects the product currently being viewed and the cart contents |
+| `1:13–1:35` | Switch product, ask the assistant what page is being viewed — it answers correctly and adds spec details |
+| `2:05–3:35` | Ask the assistant to submit an update-request signup through the chat; it asks for name and email, tested mid-flow with a locale switch to confirm the reply language adapts |
+| `3:02` | Fallback path: same event submitted directly through the landing page form |
+| `3:35` | Submission reflected in the connected Google Sheet, including the page the user was on at submit time |
+| `3:50` | Same test repeated from the cart, confirming the sheet also tracks submission source and scroll depth |
+| `4:00–4:20` | Cache/cookies cleared again to retest the assistant-driven signup flow in Vietnamese |
+| `4:22–end` | Name/email provided to the assistant, confirmed back before saving, verified in the sheet immediately after |
 
 ### Screenshots
 
 ![PageSpeed desktop result](docs/assets/pagespeed-desktop.png)
 
 ![PageSpeed mobile result](docs/assets/pagespeed-mobile.png)
-
-Additional final submission evidence can include the deployed UI, responsive screenshots, lead form webhook proof, and analytics proof if required.
 
 ## Notes
 
