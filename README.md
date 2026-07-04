@@ -105,9 +105,7 @@ npm run build
 
 ### Demo Video
 
-Video file: `docs/assets/demo/petkit-demo.mp4`
-
-<video src="docs/assets/demo/petkit-demo.mp4" controls width="720">
+<video src="https://res.cloudinary.com/dlvbs9ywm/video/upload/v1783166803/petkit-demo_qxsewy.mp4" controls width="720">
   Your browser does not support the video tag.
 </video>
 
