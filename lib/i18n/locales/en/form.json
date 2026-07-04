@@ -1,0 +1,14 @@
+{
+  "body": "Leave your details and PETKIT can follow up with product availability.",
+  "disclaimer": "Availability, pricing, and warranty terms can vary by market.",
+  "email": "Email",
+  "emailPlaceholder": "you@example.com",
+  "heading": "Get product updates",
+  "name": "Full name",
+  "namePlaceholder": "Your name",
+  "submit": "Notify me",
+  "submitting": "Submitting...",
+  "submitError": "We could not save the request yet. Please try again in a moment.",
+  "success": "A PETKIT team member will contact you as soon as possible.",
+  "validationError": "Please enter a valid name and email, then try again."
+}

@@ -4,9 +4,9 @@
     "href": "#top"
   },
   "nav": [
-    { "label": "Product", "href": "#product" },
     { "label": "Features", "href": "#features" },
     { "label": "Specs", "href": "#specs" },
+    { "label": "Product", "href": "#product" },
     { "label": "Ecosystem", "href": "#ecosystem" },
     { "label": "Contact", "href": "#contact" }
   ],
@@ -29,7 +29,7 @@
       "stats": [
         { "label": "XL capacity", "value": "76L" },
         { "label": "Waste bin", "value": "7L" },
-        { "label": "Noise level", "value": "35 dB" }
+        { "label": "Wi-Fi", "value": "2.4GHz" }
       ]
     }
   },
@@ -51,7 +51,7 @@
       {
         "title": "Drink",
         "product": "Eversweet Max 2",
-        "body": "Support daily hydration with cordless filtered water, app monitoring, and a larger refill routine."
+        "body": "Support daily hydration with cordless filtered water, app monitoring, 3L capacity, and quiet 26 dB operation."
       }
     ]
   },
@@ -66,6 +66,7 @@
       { "label": "Waste bin", "value": "7L" },
       { "label": "Noise level", "value": "35 dB" },
       { "label": "Safety sensors", "value": "11" },
+      { "label": "Wi-Fi", "value": "2.4GHz" },
       { "label": "Cat weight range", "value": "1.5-10 kg" },
       { "label": "Dimensions", "value": "620 x 538 x 552 mm" }
     ],
@@ -84,7 +85,7 @@
       },
       {
         "title": "Odor-control accessories",
-        "body": "The sealed waste bin and odor-control accessories support a cleaner indoor setup."
+        "body": "The sealed waste bin, K3 smart spray, and N50 2.0 deodorizer support a cleaner indoor setup without promising zero odor."
       },
       {
         "title": "Low-entry enclosed design",
@@ -105,17 +106,17 @@
       [
         "Balanced enclosed litter care",
         "Pura Max 2",
-        "76L interior, 7L waste bin, low 200 mm entry, quiet 35 dB operation, and no camera premium."
+        "76L interior, 7L waste bin, low 200 mm entry, 2.4GHz Wi-Fi, quiet 35 dB operation, and no camera premium."
       ],
       [
         "Camera and richer multi-cat visibility",
         "Purobot Max Pro 2",
-        "AI camera and recognition features support homes that need more identity and event visibility."
+        "AI camera features, 12 sensors, 8L waste bin, and 2.4/5GHz Wi-Fi support homes that need more identity and event visibility."
       ],
       [
         "Lowest entry and disposable tray routine",
         "Purobot Crystal Duo",
-        "Open-top design, 180 mm entry, and crystal tray routine fit a different maintenance preference."
+        "Open-top design, 180 mm entry, and PETKIT Crystal Litter tray routine fit a different maintenance preference."
       ]
     ],
     "note": "Hands-free duration, warranty, and pricing depend on market, purchase date, number of cats, usage frequency, and environment."

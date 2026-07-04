@@ -1,0 +1,14 @@
+{
+  "body": "Để lại thông tin để PETKIT có thể liên hệ về tình trạng sản phẩm.",
+  "disclaimer": "Tình trạng hàng, giá và bảo hành có thể thay đổi theo thị trường.",
+  "email": "Email",
+  "emailPlaceholder": "email@example.com",
+  "heading": "Nhận cập nhật sản phẩm",
+  "name": "Họ và tên",
+  "namePlaceholder": "Tên của bạn",
+  "submit": "Nhận thông tin",
+  "submitting": "Đang gửi...",
+  "submitError": "Hiện chưa lưu được yêu cầu. Vui lòng thử lại sau giây lát.",
+  "success": "Nhân viên PETKIT sẽ liên hệ bạn trong thời gian sớm nhất.",
+  "validationError": "Vui lòng nhập tên và email hợp lệ rồi thử lại."
+}
