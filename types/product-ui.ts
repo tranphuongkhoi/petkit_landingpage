@@ -1,4 +1,5 @@
 import type { ProductCatalogItem } from "@/lib/product-catalog";
+import type { ReactNode } from "react";
 
 export type ProductFaqItem = {
   answer: string;
@@ -11,9 +12,20 @@ export type ProductCompareProps = {
 };
 
 export type ProductFaqProps = {
-  body: string;
+  body: ReactNode;
   items: ProductFaqItem[];
+  productId: string;
+  title: ReactNode;
+};
+
+export type ProductWhyItFitsItem = {
+  body: string;
   title: string;
+};
+
+export type ProductWhyItFitsProps = {
+  fallbackItems: ProductWhyItFitsItem[];
+  productId: string;
 };
 
 export type ProductGalleryImage = {

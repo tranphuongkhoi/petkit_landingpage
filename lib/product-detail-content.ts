@@ -2,6 +2,7 @@ import { type ProductCatalogItem, productCatalog } from "@/lib/product-catalog";
 import type { ProductFaqItem } from "@/types/product-ui";
 
 export const detailRouteNav = [
+  { href: "/", label: "Home" },
   { href: "/products", label: "Lineup" },
   { href: "/products/puramax-2", label: "Pura Max 2" },
   { href: "/products/puramax-2#compare", label: "Compare" },

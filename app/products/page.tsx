@@ -1,6 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { FloatingActions } from "@/components/floating-actions";
+import {
+  CategoryLabel,
+  CommonLabel,
+  LocalizedPrice,
+  ProductDescription,
+  ProductLabel,
+  RoleLabel,
+  SpecLabel,
+  SpecValue,
+} from "@/components/i18n/localized-product-text";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { StoredProductStatus } from "@/components/product/actions";
 import landingContent from "@/content/landing-content.json";
@@ -12,7 +23,7 @@ import {
   productListingNav,
 } from "@/lib/product-listing-content";
 import { productsPageMetadata } from "@/lib/site-metadata";
-import { formatProductPrice, type ProductCatalogItem } from "@/lib/product-catalog";
+import type { ProductCatalogItem } from "@/lib/product-catalog";
 
 export const metadata = productsPageMetadata;
 
@@ -26,12 +37,14 @@ export default function ProductsPage() {
       <div className="mx-auto max-w-6xl px-5 py-16 sm:py-24">
         <section className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-end">
           <div className="max-w-3xl">
-            <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">The lineup</p>
+            <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">
+              <ProductLabel value="lineupEyebrow" />
+            </p>
             <h1 className="mt-6 max-w-2xl font-serif text-5xl leading-tight sm:text-6xl">
-              A quiet ecosystem of thoughtful companion care.
+              <ProductLabel value="lineupTitle" />
             </h1>
             <p className="mt-7 max-w-lg text-base leading-7 text-[var(--muted-foreground)]">
-              Considered devices that sit gently in the room and take the routine work off your day.
+              <ProductLabel value="lineupBody" />
             </p>
           </div>
           <div className="hidden lg:block">
@@ -40,7 +53,7 @@ export default function ProductsPage() {
         </section>
 
         <section id="litter-boxes" className="mt-20">
-          <SectionLabel number="01" title="Litter boxes" />
+          <SectionLabel number="01" title={<ProductLabel value="litterBoxesTitle" />} />
           <div className="mt-8 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
             <div className="grid gap-7">
               <FeaturedProductCard product={featured} />
@@ -54,7 +67,7 @@ export default function ProductsPage() {
         </section>
 
         <section id="ecosystem" className="mt-24">
-          <SectionLabel number="02" title="Smart care add-ons" />
+          <SectionLabel number="02" title={<ProductLabel value="addonsTitle" />} />
           <div className="mt-8 grid gap-7 md:grid-cols-2 lg:max-w-[calc(100%-19rem)]">
             {ecosystemProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -69,7 +82,7 @@ export default function ProductsPage() {
   );
 }
 
-function SectionLabel({ number, title }: { number: string; title: string }) {
+function SectionLabel({ number, title }: { number: string; title: ReactNode }) {
   return (
     <div className="flex items-center gap-4 border-b border-[var(--border)] pb-3">
       <span className="text-[0.68rem] font-bold text-[var(--primary)]">{number}</span>
@@ -80,18 +93,20 @@ function SectionLabel({ number, title }: { number: string; title: string }) {
 
 function FeaturedProductCard({ product }: { product: ProductCatalogItem }) {
   return (
-    <article className="overflow-hidden rounded-[1.6rem] border border-[var(--border)] bg-white/55 shadow-sm md:grid md:grid-cols-[1fr_0.85fr]">
-      <ProductImagePanel product={product} className="min-h-[22rem]" imageClassName="max-w-none object-cover" />
-      <div className="flex flex-col justify-center p-8 md:p-10">
+    <article className="overflow-hidden rounded-[1.6rem] border border-[var(--border)] bg-white/55 shadow-sm md:grid md:grid-cols-[0.95fr_1fr]">
+      <ProductImagePanel product={product} className="min-h-[22rem]" imageClassName="max-w-[28rem] object-contain" />
+      <div className="flex min-h-[22rem] flex-col justify-center p-8 md:p-10">
         <span className="w-fit rounded-full border border-[var(--border)] bg-[var(--background)] px-3 py-1 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
-          {product.role}
+          <RoleLabel value={product.role} />
         </span>
         <p className="mt-6 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
-          {product.category}
+          <CategoryLabel value={product.category} />
         </p>
         <h3 className="mt-2 font-serif text-4xl leading-tight">{product.name}</h3>
         <ProductPrice product={product} />
-        <p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted-foreground)]">{product.description}</p>
+        <p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted-foreground)]">
+          <ProductDescription fallback={product.description} productId={product.id} />
+        </p>
         <SpecRows specs={getPublicCardSpecs(product).slice(0, 4)} />
         <ProductLink product={product} filled />
       </div>
@@ -105,12 +120,16 @@ function ProductCard({ product }: { product: ProductCatalogItem }) {
       <ProductImagePanel product={product} className="min-h-[15rem] rounded-2xl" imageClassName="max-w-[16rem] object-contain" />
       <div className="flex flex-1 flex-col pt-5">
         <span className="w-fit rounded-full border border-[var(--border)] bg-[var(--background)] px-3 py-1 text-[0.65rem] font-bold uppercase text-[var(--muted-foreground)]">
-          {product.role}
+          <RoleLabel value={product.role} />
         </span>
-        <p className="mt-4 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">{product.category}</p>
+        <p className="mt-4 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
+          <CategoryLabel value={product.category} />
+        </p>
         <h3 className="mt-1 font-serif text-2xl leading-tight">{product.name}</h3>
         <ProductPrice product={product} />
-        <p className="mt-4 min-h-24 flex-1 text-sm leading-6 text-[var(--muted-foreground)]">{product.description}</p>
+        <p className="mt-4 min-h-24 flex-1 text-sm leading-6 text-[var(--muted-foreground)]">
+          <ProductDescription fallback={product.description} productId={product.id} />
+        </p>
         <SpecRows specs={getPublicCardSpecs(product).slice(0, 3)} />
         <ProductLink product={product} />
       </div>
@@ -147,8 +166,12 @@ function SpecRows({ specs }: { specs: ProductCatalogItem["specs"] }) {
     <dl className="mt-7 grid grid-cols-2 gap-x-8 gap-y-4 border-t border-[var(--border)] pt-5">
       {specs.map((spec) => (
         <div key={spec.label}>
-          <dt className="text-[0.65rem] font-bold uppercase text-[var(--muted-foreground)]">{spec.label}</dt>
-          <dd className="mt-1 text-sm font-bold">{spec.value}</dd>
+          <dt className="text-[0.65rem] font-bold uppercase text-[var(--muted-foreground)]">
+            <SpecLabel value={spec.label} />
+          </dt>
+          <dd className="mt-1 text-sm font-bold">
+            <SpecValue value={spec.value} />
+          </dd>
         </div>
       ))}
     </dl>
@@ -166,7 +189,7 @@ function ProductLink({ filled, product }: { filled?: boolean; product: ProductCa
       ].join(" ")}
       href={`/products/${product.slug}`}
     >
-      View details
+      <CommonLabel value="viewDetails" />
       <span className="ml-2" aria-hidden="true">
         →
       </span>
@@ -177,10 +200,10 @@ function ProductLink({ filled, product }: { filled?: boolean; product: ProductCa
 function ProductPrice({ product }: { product: ProductCatalogItem }) {
   return (
     <p className="mt-3 font-display text-xl font-bold text-[var(--primary)]">
-      {formatProductPrice(product)}
+      <LocalizedPrice value={product.priceUsd} />
       {product.regularPriceUsd ? (
         <span className="ml-2 text-sm font-semibold text-[var(--muted-foreground)] line-through">
-          {formatProductPrice({ ...product, priceUsd: product.regularPriceUsd })}
+          <LocalizedPrice value={product.regularPriceUsd} />
         </span>
       ) : null}
     </p>

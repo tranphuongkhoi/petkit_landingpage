@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatProductPrice } from "@/lib/product-catalog";
+import { LocalizedPrice, ProductLabel, RoleLabel } from "@/components/i18n/localized-product-text";
 import type { ProductSuiteProps } from "@/types/product-ui";
 
 export function ProductSuite({ products }: ProductSuiteProps) {
@@ -9,12 +9,14 @@ export function ProductSuite({ products }: ProductSuiteProps) {
   return (
     <section className="mt-24 border-t border-[var(--border)] pt-16">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="font-serif text-4xl leading-tight">Complete the suite</h2>
+        <h2 className="font-serif text-4xl leading-tight">
+          <ProductLabel value="completeSuite" />
+        </h2>
         <Link
           className="text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)] transition hover:text-[var(--primary)]"
           href="/products"
         >
-          Back to lineup
+          <ProductLabel value="backToLineup" />
         </Link>
       </div>
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -36,9 +38,13 @@ export function ProductSuite({ products }: ProductSuiteProps) {
               ) : null}
             </div>
             <div className="p-5">
-              <p className="text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">{item.role}</p>
+              <p className="text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
+                <RoleLabel value={item.role} />
+              </p>
               <h3 className="mt-1 min-h-10 text-base font-bold leading-tight">{item.name}</h3>
-              <p className="mt-3 font-display text-lg font-bold text-[var(--primary)]">{formatProductPrice(item)}</p>
+              <p className="mt-3 font-display text-lg font-bold text-[var(--primary)]">
+                <LocalizedPrice value={item.priceUsd} />
+              </p>
             </div>
           </Link>
         ))}

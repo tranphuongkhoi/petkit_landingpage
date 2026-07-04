@@ -1,5 +1,6 @@
 import productFoundationJson from "@/content/product-foundation.json";
 import type { ProductCardData, ProductFoundation } from "@/types/product-foundation";
+import { formatUsd } from "@/lib/pricing";
 
 const productFoundation = productFoundationJson as ProductFoundation;
 
@@ -16,7 +17,7 @@ export const productCatalog: ProductCatalogItem[] = sections.flatMap((section) =
     ...product,
     sectionId: section.id,
     sectionTitle: section.heading,
-    slug: product.id,
+    slug: product.id as string,
   })),
 );
 
@@ -26,13 +27,4 @@ export function getProductBySlug(slug: string) {
 
 export function formatProductPrice(product: ProductCatalogItem) {
   return formatUsd(product.priceUsd);
-}
-
-export function formatUsd(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    currency: "USD",
-    maximumFractionDigits: value % 1 === 0 ? 0 : 2,
-    minimumFractionDigits: value % 1 === 0 ? 0 : 2,
-    style: "currency",
-  }).format(value);
 }
