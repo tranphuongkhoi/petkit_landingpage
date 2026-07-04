@@ -18,6 +18,11 @@ type StoredWishlistItem = {
 
 type WishlistEntry = string | StoredWishlistItem;
 
+type LeadContact = {
+  email: string;
+  name: string;
+};
+
 function cleanAssistantText(value: string) {
   return value
     .replace(/\*\*(.*?)\*\*/g, "$1")
@@ -35,6 +40,7 @@ export function FloatingActions() {
   const [input, setInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [chatHydrated, setChatHydrated] = useState(false);
+  const [pendingLead, setPendingLead] = useState<LeadContact | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const submittedLeadRef = useRef<string | null>(null);
 
@@ -102,6 +108,62 @@ export function FloatingActions() {
     const trimmedText = text.trim();
     if (!trimmedText || submitting) return;
 
+    setInput("");
+
+    if (pendingLead) {
+      setMessages((current) => [...current, { from: "user", text: trimmedText }]);
+
+      if (isLeadConfirmation(trimmedText)) {
+        setSubmitting(true);
+
+        try {
+          await submitLead(pendingLead, submittedLeadRef);
+          setPendingLead(null);
+          setMessages((current) => [
+            ...current,
+            { from: "bot", text: getLeadSubmitSuccessText(locale) },
+          ]);
+        } catch (error) {
+          console.error("Assistant lead submit failed", error);
+          setMessages((current) => [
+            ...current,
+            { from: "bot", text: getLeadSubmitErrorText(locale) },
+          ]);
+        } finally {
+          setSubmitting(false);
+        }
+
+        return;
+      }
+
+      if (isLeadRejection(trimmedText)) {
+        setPendingLead(null);
+        setMessages((current) => [
+          ...current,
+          { from: "bot", text: getLeadCorrectionText(locale) },
+        ]);
+        return;
+      }
+
+      setMessages((current) => [
+        ...current,
+        { from: "bot", text: getLeadClarifyText(locale, pendingLead) },
+      ]);
+      return;
+    }
+
+    const leadContact = extractLeadContact(trimmedText);
+
+    if (leadContact) {
+      setPendingLead(leadContact);
+      setMessages((current) => [
+        ...current,
+        { from: "user", text: trimmedText },
+        { from: "bot", text: getLeadConfirmationText(locale, leadContact) },
+      ]);
+      return;
+    }
+
     const history = messages.slice(-8).map((entry) => ({
       role: entry.from === "user" ? ("user" as const) : ("assistant" as const),
       content: entry.text,
@@ -109,7 +171,6 @@ export function FloatingActions() {
 
     setSubmitting(true);
     setMessages((current) => [...current, { from: "user", text: trimmedText }]);
-    setInput("");
 
     try {
       const response = await fetch("/api/assistant", {
@@ -134,7 +195,6 @@ export function FloatingActions() {
         ...current,
         { from: "bot", text: cleanAssistantText(reply) },
       ]);
-      await submitLeadFromMessage(trimmedText, submittedLeadRef);
     } catch (error) {
       console.error("Assistant message failed", error);
       setMessages((current) => [
@@ -358,22 +418,68 @@ function normalizeLeadName(value: string) {
   return cleaned.slice(0, 80);
 }
 
-async function submitLeadFromMessage(
-  message: string,
+function isLeadConfirmation(message: string) {
+  return /^(yes|y|ok|okay|confirm|confirmed|correct|submit|send|đúng|dung|okie|oke|xác nhận|xac nhan|gửi|gui|đồng ý|dong y)(\s|[.!?])*/i.test(
+    message.trim(),
+  );
+}
+
+function isLeadRejection(message: string) {
+  return /^(no|n|not yet|wrong|cancel|edit|change|không|khong|sai|hủy|huy|đổi|doi|chưa|chua)(\s|[.!?])*/i.test(
+    message.trim(),
+  );
+}
+
+function getLeadConfirmationText(locale: "en" | "vi", lead: LeadContact) {
+  if (locale === "vi") {
+    return `Mình đã nhận thông tin:\nTên: ${lead.name}\nEmail: ${lead.email}\nBạn xác nhận gửi thông tin này cho PETKIT chưa? Trả lời "đúng" để gửi hoặc "sai" để nhập lại.`;
+  }
+
+  return `I captured these details:\nName: ${lead.name}\nEmail: ${lead.email}\nPlease confirm before I send them to PETKIT. Reply "yes" to submit or "no" to edit.`;
+}
+
+function getLeadClarifyText(locale: "en" | "vi", lead: LeadContact) {
+  if (locale === "vi") {
+    return `Mình chưa gửi thông tin. Vui lòng xác nhận: tên "${lead.name}" và email "${lead.email}" đã đúng chưa?`;
+  }
+
+  return `I have not submitted yet. Please confirm whether "${lead.name}" and "${lead.email}" are correct.`;
+}
+
+function getLeadCorrectionText(locale: "en" | "vi") {
+  return locale === "vi"
+    ? "Được, mình chưa gửi thông tin. Bạn có thể nhập lại tên và email đúng."
+    : "No problem. I have not submitted anything. Please send the corrected name and email.";
+}
+
+function getLeadSubmitSuccessText(locale: "en" | "vi") {
+  return locale === "vi"
+    ? "Đã gửi thông tin cho PETKIT. Nhân viên sẽ liên hệ bạn sớm nhất có thể. Bạn có cần mình hỗ trợ thêm về sản phẩm nào không?"
+    : "Your details have been sent to PETKIT. A team member will contact you as soon as possible. Do you need help with anything else?";
+}
+
+function getLeadSubmitErrorText(locale: "en" | "vi") {
+  return locale === "vi"
+    ? "Mình chưa lưu được thông tin lúc này. Vui lòng thử lại sau ít phút."
+    : "I could not save the details yet. Please try again in a moment.";
+}
+
+async function submitLead(
+  leadContact: LeadContact,
   submittedLeadRef: { current: string | null },
 ) {
-  const leadContact = extractLeadContact(message);
-  if (!leadContact) return;
-
   const context = getAssistantContext();
+  const cartSummary = context.cart
+    .map((item) => `${item.name} x${item.quantity ?? 1}`)
+    .join(", ");
+  const savedSummary = context.saved.map((item) => item.name).join(", ");
   const productName =
-    context.cart.length > 0
-      ? `Cart: ${context.cart
-          .map((item) => `${item.name} x${item.quantity ?? 1}`)
-          .join(", ")}`
-      : context.saved.length > 0
-        ? `Saved: ${context.saved.map((item) => item.name).join(", ")}`
-        : "PETKIT product updates";
+    [
+      cartSummary ? `Cart: ${cartSummary}` : "",
+      savedSummary ? `Saved: ${savedSummary}` : "",
+    ]
+      .filter(Boolean)
+      .join("; ") || "PETKIT product updates";
   const signature = `${leadContact.email.toLowerCase()}|${leadContact.name.toLowerCase()}|${productName}`;
 
   if (submittedLeadRef.current === signature) return;
@@ -383,7 +489,7 @@ async function submitLeadFromMessage(
   const scrollDepth =
     maxScroll > 0 ? Math.round((window.scrollY / maxScroll) * 100) : 0;
 
-  await fetch("/api/events", {
+  const response = await fetch("/api/events", {
     body: JSON.stringify({
       email: leadContact.email,
       eventType: "lead_submit",
@@ -402,5 +508,7 @@ async function submitLeadFromMessage(
     },
     method: "POST",
   });
+
+  if (!response.ok) throw new Error("Assistant lead submit failed");
 }
 

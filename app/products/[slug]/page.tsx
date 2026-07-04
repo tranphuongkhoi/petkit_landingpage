@@ -51,6 +51,9 @@ export async function generateMetadata({ params }: ProductDetailPageProps) {
   return {
     title: `${product.name} | PETKIT Smart Cat Care`,
     description: product.description,
+    alternates: {
+      canonical: `/products/${product.slug}`,
+    },
   };
 }
 
