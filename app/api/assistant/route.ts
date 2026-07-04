@@ -64,12 +64,23 @@ function validateAssistantRequest(payload: unknown): AssistantRequest | null {
 
   return obj as AssistantRequest;
 }
+function stripReasoningArtifacts(text: string): string {
+  const withoutClosedBlocks = text.replace(/<think>[\s\S]*?<\/think>/gi, "");
+  const openTagIndex = withoutClosedBlocks.search(/<think>/i);
+  const withoutOpenTag =
+    openTagIndex === -1
+      ? withoutClosedBlocks
+      : withoutClosedBlocks.slice(0, openTagIndex);
+
+  return withoutOpenTag.replace(/<\/?think>/gi, "").trim();
+}
 
 export async function POST(request: Request) {
   let payload: AssistantRequest;
 
   try {
-    payload = validateAssistantRequest(await request.json()) ?? (await request.json());
+    payload =
+      validateAssistantRequest(await request.json()) ?? (await request.json());
   } catch {
     console.error("Assistant request parse failed");
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
@@ -101,7 +112,7 @@ export async function POST(request: Request) {
 
       if (forcedOpenRouterResult.reply) {
         return NextResponse.json({
-          reply: forcedOpenRouterResult.reply,
+          reply: stripReasoningArtifacts(forcedOpenRouterResult.reply),
           mode: forcedOpenRouterResult.model,
           provider: "openrouter",
         });
@@ -119,14 +130,17 @@ export async function POST(request: Request) {
     const groqResult = await requestGroq(messages);
 
     if (groqResult.reply) {
-      return NextResponse.json({ reply: groqResult.reply, mode: "groq" });
+      return NextResponse.json({
+        reply: stripReasoningArtifacts(groqResult.reply),
+        mode: "groq",
+      });
     }
 
     const openRouterResult = await requestOpenRouter(messages);
 
     if (openRouterResult.reply) {
       return NextResponse.json({
-        reply: openRouterResult.reply,
+        reply: stripReasoningArtifacts(openRouterResult.reply),
         mode: openRouterResult.model,
         provider: "openrouter",
       });
@@ -188,7 +202,8 @@ async function requestGroq(
     if (!response.ok) {
       console.error("Groq API error", response.status, bodyText || "unknown");
       return {
-        limitRelated: response.status === 429 || /limit|quota|rate/i.test(bodyText),
+        limitRelated:
+          response.status === 429 || /limit|quota|rate/i.test(bodyText),
         reply: "",
       };
     }
@@ -216,7 +231,10 @@ async function requestOpenRouter(
 
   for (const model of OPENROUTER_MODELS) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), OPENROUTER_API_TIMEOUT);
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      OPENROUTER_API_TIMEOUT,
+    );
 
     try {
       const response = await fetch(
@@ -225,8 +243,9 @@ async function requestOpenRouter(
           body: JSON.stringify({
             messages,
             model,
-            max_tokens: 220,
+            max_tokens: 500,
             temperature: 0.25,
+            reasoning: { exclude: true },
           }),
           headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -292,6 +311,7 @@ function buildSystemPrompt(
     locale === "vi"
       ? "CRITICAL: You must reply ONLY in Vietnamese, regardless of what language the user writes in."
       : "CRITICAL: You must reply ONLY in English, regardless of what language the user writes in.",
+    "Do not include any chain-of-thought, planning notes, or <think> tags in your reply. Output only the final answer text.",
     "You are PETKIT Assistant for a product landing-page coding test.",
     "Answer only from the supplied PETKIT project data. If the user asks outside PETKIT products, politely refuse and redirect to Pura Max 2/product fit/update flow.",
     "You have access to the recent conversation history. Use it to stay consistent and avoid repeating yourself or re-asking things already answered.",
