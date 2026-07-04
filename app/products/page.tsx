@@ -53,7 +53,10 @@ export default function ProductsPage() {
         </section>
 
         <section id="litter-boxes" className="mt-20">
-          <SectionLabel number="01" title={<ProductLabel value="litterBoxesTitle" />} />
+          <SectionLabel
+            number="01"
+            title={<ProductLabel value="litterBoxesTitle" />}
+          />
           <div className="mt-8 grid gap-7 lg:grid-cols-[minmax(0,1fr)_17rem]">
             <div className="grid gap-7">
               <FeaturedProductCard product={featured} />
@@ -67,7 +70,10 @@ export default function ProductsPage() {
         </section>
 
         <section id="ecosystem" className="mt-24">
-          <SectionLabel number="02" title={<ProductLabel value="addonsTitle" />} />
+          <SectionLabel
+            number="02"
+            title={<ProductLabel value="addonsTitle" />}
+          />
           <div className="mt-8 grid gap-7 md:grid-cols-2 lg:max-w-[calc(100%-19rem)]">
             {ecosystemProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -85,7 +91,9 @@ export default function ProductsPage() {
 function SectionLabel({ number, title }: { number: string; title: ReactNode }) {
   return (
     <div className="flex items-center gap-4 border-b border-[var(--border)] pb-3">
-      <span className="text-[0.68rem] font-bold text-[var(--primary)]">{number}</span>
+      <span className="text-[0.68rem] font-bold text-[var(--primary)]">
+        {number}
+      </span>
       <h2 className="font-display text-lg font-bold">{title}</h2>
     </div>
   );
@@ -94,7 +102,11 @@ function SectionLabel({ number, title }: { number: string; title: ReactNode }) {
 function FeaturedProductCard({ product }: { product: ProductCatalogItem }) {
   return (
     <article className="overflow-hidden rounded-[1.6rem] border border-[var(--border)] bg-white/55 shadow-sm md:grid md:grid-cols-[0.95fr_1fr]">
-      <ProductImagePanel product={product} className="min-h-[22rem]" imageClassName="max-w-[28rem] object-contain" />
+      <ProductImagePanel
+        product={product}
+        className="min-h-[22rem]"
+        imageClassName="max-w-[28rem] object-contain"
+      />
       <div className="flex min-h-[22rem] flex-col justify-center p-8 md:p-10">
         <span className="w-fit rounded-full border border-[var(--border)] bg-[var(--background)] px-3 py-1 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
           <RoleLabel value={product.role} />
@@ -102,10 +114,15 @@ function FeaturedProductCard({ product }: { product: ProductCatalogItem }) {
         <p className="mt-6 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
           <CategoryLabel value={product.category} />
         </p>
-        <h3 className="mt-2 font-serif text-4xl leading-tight">{product.name}</h3>
+        <h3 className="mt-2 font-serif text-4xl leading-tight">
+          {product.name}
+        </h3>
         <ProductPrice product={product} />
         <p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted-foreground)]">
-          <ProductDescription fallback={product.description} productId={product.id} />
+          <ProductDescription
+            fallback={product.description}
+            productId={product.id}
+          />
         </p>
         <SpecRows specs={getPublicCardSpecs(product).slice(0, 4)} />
         <ProductLink product={product} filled />
@@ -117,7 +134,11 @@ function FeaturedProductCard({ product }: { product: ProductCatalogItem }) {
 function ProductCard({ product }: { product: ProductCatalogItem }) {
   return (
     <article className="flex min-h-[34rem] flex-col rounded-[1.35rem] border border-[var(--border)] bg-white/50 p-5 shadow-sm">
-      <ProductImagePanel product={product} className="min-h-[15rem] rounded-2xl" imageClassName="max-w-[16rem] object-contain" />
+      <ProductImagePanel
+        product={product}
+        className="min-h-[15rem] rounded-2xl"
+        imageClassName="max-w-[16rem] object-contain"
+      />
       <div className="flex flex-1 flex-col pt-5">
         <span className="w-fit rounded-full border border-[var(--border)] bg-[var(--background)] px-3 py-1 text-[0.65rem] font-bold uppercase text-[var(--muted-foreground)]">
           <RoleLabel value={product.role} />
@@ -125,10 +146,15 @@ function ProductCard({ product }: { product: ProductCatalogItem }) {
         <p className="mt-4 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
           <CategoryLabel value={product.category} />
         </p>
-        <h3 className="mt-1 font-serif text-2xl leading-tight">{product.name}</h3>
+        <h3 className="mt-1 font-serif text-2xl leading-tight">
+          {product.name}
+        </h3>
         <ProductPrice product={product} />
         <p className="mt-4 min-h-24 flex-1 text-sm leading-6 text-[var(--muted-foreground)]">
-          <ProductDescription fallback={product.description} productId={product.id} />
+          <ProductDescription
+            fallback={product.description}
+            productId={product.id}
+          />
         </p>
         <SpecRows specs={getPublicCardSpecs(product).slice(0, 3)} />
         <ProductLink product={product} />
@@ -147,7 +173,8 @@ function ProductImagePanel({
   product: ProductCatalogItem;
 }) {
   return (
-    <div className={`flex items-center justify-center overflow-hidden bg-[color:rgba(236,214,177,0.58)] p-6 ${className}`}>
+    <div
+      className={`flex items-center justify-center overflow-hidden bg-[color:rgba(236,214,177,0.58)] p-6 ${className}`}>
       {product.image ? (
         <Image
           alt={product.image.alt}
@@ -178,7 +205,13 @@ function SpecRows({ specs }: { specs: ProductCatalogItem["specs"] }) {
   );
 }
 
-function ProductLink({ filled, product }: { filled?: boolean; product: ProductCatalogItem }) {
+function ProductLink({
+  filled,
+  product,
+}: {
+  filled?: boolean;
+  product: ProductCatalogItem;
+}) {
   return (
     <Link
       className={[
@@ -187,8 +220,7 @@ function ProductLink({ filled, product }: { filled?: boolean; product: ProductCa
           ? "rounded-full bg-[var(--foreground)] px-5 py-3 text-[var(--background)] shadow-sm shadow-[rgba(0,0,0,0.08)]"
           : "rounded-full border border-[var(--border)] px-5 py-3 text-[var(--foreground)] hover:bg-[var(--soft-panel)] hover:text-[var(--primary)]",
       ].join(" ")}
-      href={`/products/${product.slug}`}
-    >
+      href={`/products/${product.slug}`}>
       <CommonLabel value="viewDetails" />
       <span className="ml-2" aria-hidden="true">
         →
