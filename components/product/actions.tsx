@@ -6,7 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Check, Heart, Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { UpdateInterestForm } from "@/components/forms/form";
-import { LocalizedPrice, RoleLabel } from "@/components/i18n/localized-product-text";
+import {
+  LocalizedPrice,
+  RoleLabel,
+} from "@/components/i18n/localized-product-text";
 import { useAppPreferences } from "@/components/providers/app-preferences";
 import {
   CART_STORAGE_KEY,
@@ -36,7 +39,11 @@ export function ProductActionBar({ product }: { product: ProductCatalogItem }) {
     const storedCart = readStoredArray<StoredCartItem>(CART_STORAGE_KEY, []);
     const existing = storedCart.find((item) => item.id === product.id);
     const nextCart = existing
-      ? storedCart.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item))
+      ? storedCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        )
       : [
           ...storedCart,
           {
@@ -61,7 +68,10 @@ export function ProductActionBar({ product }: { product: ProductCatalogItem }) {
       ? wishlist.filter((id) => id !== product.id)
       : [...wishlist, product.id];
 
-    window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(nextWishlist));
+    window.localStorage.setItem(
+      WISHLIST_STORAGE_KEY,
+      JSON.stringify(nextWishlist),
+    );
     setWishlisted(nextWishlist.includes(product.id));
   };
 
@@ -70,17 +80,25 @@ export function ProductActionBar({ product }: { product: ProductCatalogItem }) {
       <button
         className="inline-flex items-center rounded-full bg-[var(--primary)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--primary-hover)]"
         type="button"
-        onClick={addToCart}
-      >
-        {added ? <Check className="mr-2 h-4 w-4" aria-hidden="true" /> : <Plus className="mr-2 h-4 w-4" aria-hidden="true" />}
+        onClick={addToCart}>
+        {added ? (
+          <Check className="mr-2 h-4 w-4" aria-hidden="true" />
+        ) : (
+          <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+        )}
         {added ? dictionary.common.added : dictionary.common.add}
       </button>
       <button
         className="inline-flex items-center rounded-full border border-[var(--border)] bg-white/50 px-5 py-3 text-sm font-bold text-[var(--primary)] transition hover:bg-[var(--card)]"
         type="button"
-        onClick={toggleWishlist}
-      >
-        <Heart className={["mr-2 h-4 w-4", wishlisted ? "fill-[var(--primary)]" : ""].join(" ")} aria-hidden="true" />
+        onClick={toggleWishlist}>
+        <Heart
+          className={[
+            "mr-2 h-4 w-4",
+            wishlisted ? "fill-[var(--primary)]" : "",
+          ].join(" ")}
+          aria-hidden="true"
+        />
         {wishlisted ? dictionary.common.saved : dictionary.common.save}
       </button>
       {added ? (
@@ -120,9 +138,11 @@ export function CartCountBadge() {
       className={[
         "inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white/55 px-3 py-2 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]",
         bouncing ? "animate-[cart-bounce_0.42s_ease-in-out_3]" : "",
-      ].join(" ")}
-    >
-      <ShoppingCart className="h-3.5 w-3.5 text-[var(--primary)]" aria-hidden="true" />
+      ].join(" ")}>
+      <ShoppingCart
+        className="h-3.5 w-3.5 text-[var(--primary)]"
+        aria-hidden="true"
+      />
       {count}
     </span>
   );
@@ -173,9 +193,11 @@ export function SiteCartControl() {
           bouncing ? "animate-[cart-bounce_0.42s_ease-in-out_3]" : "",
         ].join(" ")}
         type="button"
-        onClick={() => setCartOpen(true)}
-      >
-        <ShoppingCart className="h-5 w-5 text-[var(--primary)]" aria-hidden="true" />
+        onClick={() => setCartOpen(true)}>
+        <ShoppingCart
+          className="h-5 w-5 text-[var(--primary)]"
+          aria-hidden="true"
+        />
         {getCartItemCount(items) > 0 ? (
           <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-xs font-bold text-white">
             {getCartItemCount(items)}
@@ -193,17 +215,28 @@ export function SiteCartControl() {
   );
 }
 
-export function RecentlyViewedTracker({ product }: { product: ProductCatalogItem }) {
+export function RecentlyViewedTracker({
+  product,
+}: {
+  product: ProductCatalogItem;
+}) {
   useEffect(() => {
     const recentlyViewed = readStoredArray<string>(RECENT_STORAGE_KEY, []);
-    const nextItems = [product.id, ...recentlyViewed.filter((id) => id !== product.id)].slice(0, 5);
+    const nextItems = [
+      product.id,
+      ...recentlyViewed.filter((id) => id !== product.id),
+    ].slice(0, 5);
     window.localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(nextItems));
   }, [product.id]);
 
   return null;
 }
 
-export function StoredProductStatus({ products }: { products: ProductCatalogItem[] }) {
+export function StoredProductStatus({
+  products,
+}: {
+  products: ProductCatalogItem[];
+}) {
   const [wishlistItems, setWishlistItems] = useState<ProductCatalogItem[]>([]);
   const [recentItems, setRecentItems] = useState<ProductCatalogItem[]>([]);
 
@@ -225,8 +258,16 @@ export function StoredProductStatus({ products }: { products: ProductCatalogItem
 
   return (
     <aside className="grid gap-7">
-      <ProductStatusList emptyTextKey="savedEmpty" items={wishlistItems} titleKey="saved" />
-      <ProductStatusList emptyTextKey="recentEmpty" items={recentItems} titleKey="recent" />
+      <ProductStatusList
+        emptyTextKey="savedEmpty"
+        items={wishlistItems}
+        titleKey="saved"
+      />
+      <ProductStatusList
+        emptyTextKey="recentEmpty"
+        items={recentItems}
+        titleKey="recent"
+      />
     </aside>
   );
 }
@@ -244,11 +285,15 @@ function ProductStatusList({
 
   return (
     <section className="max-h-72 overflow-y-auto rounded-[1.35rem] border border-[var(--border)] bg-white/45 p-5 shadow-sm">
-      <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">{dictionary.cart[titleKey]}</p>
+      <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">
+        {dictionary.cart[titleKey]}
+      </p>
       <div className="mt-4 grid gap-3">
         {items.length > 0 ? (
           items.map((product) => (
-            <div key={product.id} className="grid grid-cols-[2.25rem_1fr] items-center gap-3">
+            <div
+              key={product.id}
+              className="grid grid-cols-[2.25rem_1fr] items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-[var(--card)]">
                 {product.image ? (
                   <Image
@@ -261,7 +306,9 @@ function ProductStatusList({
                 ) : null}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-xs font-bold text-[var(--foreground)]">{product.name}</p>
+                <p className="truncate text-xs font-bold text-[var(--foreground)]">
+                  {product.name}
+                </p>
                 <p className="truncate text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
                   <RoleLabel value={product.role} />
                 </p>
@@ -269,7 +316,9 @@ function ProductStatusList({
             </div>
           ))
         ) : (
-          <p className="text-xs leading-5 text-[var(--muted-foreground)]">{dictionary.cart[emptyTextKey]}</p>
+          <p className="text-xs leading-5 text-[var(--muted-foreground)]">
+            {dictionary.cart[emptyTextKey]}
+          </p>
         )}
       </div>
     </section>
@@ -291,7 +340,10 @@ export function CartDrawer({
 }) {
   const { dictionary } = useAppPreferences();
   const totalItems = getCartItemCount(cartItems);
-  const totalPrice = cartItems.reduce((total, item) => total + getItemPrice(item) * item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + getItemPrice(item) * item.quantity,
+    0,
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -317,15 +369,18 @@ export function CartDrawer({
       <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-[var(--border)] bg-[var(--background)] shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
           <div>
-            <p className="text-sm font-bold uppercase text-[var(--primary)]">{dictionary.cart.title}</p>
-            <h2 className="text-2xl font-bold">{dictionary.cart.selectedProducts}</h2>
+            <p className="text-sm font-bold uppercase text-[var(--primary)]">
+              {dictionary.cart.title}
+            </p>
+            <h2 className="text-2xl font-bold">
+              {dictionary.cart.selectedProducts}
+            </h2>
           </div>
           <button
             aria-label="Close cart"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-white/60"
             type="button"
-            onClick={onClose}
-          >
+            onClick={onClose}>
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
@@ -336,8 +391,7 @@ export function CartDrawer({
               {cartItems.map((item) => (
                 <article
                   key={item.id}
-                  className="grid grid-cols-[4.5rem_1fr] gap-4 rounded-2xl border border-[var(--border)] bg-white/70 p-4"
-                >
+                  className="grid grid-cols-[4.5rem_1fr] gap-4 rounded-2xl border border-[var(--border)] bg-white/70 p-4">
                   <div className="flex h-[4.5rem] w-[4.5rem] items-center justify-center overflow-hidden rounded-2xl bg-[var(--card)]">
                     {item.image ? (
                       <Image
@@ -348,13 +402,18 @@ export function CartDrawer({
                         width={item.image.width}
                       />
                     ) : (
-                      <ShoppingCart className="h-6 w-6 text-[var(--primary)]" aria-hidden="true" />
+                      <ShoppingCart
+                        className="h-6 w-6 text-[var(--primary)]"
+                        aria-hidden="true"
+                      />
                     )}
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <Link className="font-bold leading-snug hover:text-[var(--primary)]" href={`/products/${item.slug}`}>
+                        <Link
+                          className="font-bold leading-snug hover:text-[var(--primary)]"
+                          href={`/products/${item.slug}`}>
                           {item.name}
                         </Link>
                         <p className="mt-1 text-xs font-bold uppercase text-[var(--muted-foreground)]">
@@ -367,33 +426,38 @@ export function CartDrawer({
                       <button
                         className="text-xs font-bold uppercase text-[var(--muted-foreground)] transition hover:text-[var(--primary)]"
                         type="button"
-                        onClick={() => onRemove(item.id)}
-                      >
+                        onClick={() => onRemove(item.id)}>
                         {dictionary.common.remove}
                       </button>
                     </div>
                     <div className="mt-4 flex items-center justify-between gap-3">
-                      <div className="inline-flex items-center rounded-full border border-[var(--border)] bg-white">
+                      <div className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--card)]">
                         <button
                           aria-label={`Decrease ${item.name}`}
-                          className="flex h-8 w-8 items-center justify-center"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--foreground)] transition hover:bg-[var(--soft-panel)]"
                           type="button"
-                          onClick={() => onQuantityChange(item.id, item.quantity - 1)}
-                        >
+                          onClick={() =>
+                            onQuantityChange(item.id, item.quantity - 1)
+                          }>
                           <Minus className="h-4 w-4" aria-hidden="true" />
                         </button>
-                        <span className="min-w-8 text-center text-sm font-bold">{item.quantity}</span>
+                        <span className="min-w-8 text-center text-sm font-bold text-[var(--foreground)]">
+                          {item.quantity}
+                        </span>
                         <button
                           aria-label={`Increase ${item.name}`}
-                          className="flex h-8 w-8 items-center justify-center"
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--foreground)] transition hover:bg-[var(--soft-panel)]"
                           type="button"
-                          onClick={() => onQuantityChange(item.id, item.quantity + 1)}
-                        >
+                          onClick={() =>
+                            onQuantityChange(item.id, item.quantity + 1)
+                          }>
                           <Plus className="h-4 w-4" aria-hidden="true" />
                         </button>
                       </div>
-                      <p className="text-sm font-bold">
-                        <LocalizedPrice value={getItemPrice(item) * item.quantity} />
+                      <p className="text-sm font-bold text-[var(--foreground)]">
+                        <LocalizedPrice
+                          value={getItemPrice(item) * item.quantity}
+                        />
                       </p>
                     </div>
                   </div>
@@ -402,7 +466,10 @@ export function CartDrawer({
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-[var(--border)] bg-white/55 p-6 text-center">
-              <ShoppingCart className="mx-auto h-8 w-8 text-[var(--primary)]" aria-hidden="true" />
+              <ShoppingCart
+                className="mx-auto h-8 w-8 text-[var(--primary)]"
+                aria-hidden="true"
+              />
               <p className="mt-3 font-bold">{dictionary.cart.emptyTitle}</p>
               <p className="mt-2 text-sm leading-6 text-[var(--muted-foreground)]">
                 {dictionary.cart.emptyBody}
@@ -420,13 +487,17 @@ export function CartDrawer({
               <LocalizedPrice value={totalPrice} />
             </span>
           </div>
-            <p className="mt-2 text-xs leading-5 text-[var(--muted-foreground)]">
-              {dictionary.cart.pricingNotice}
-            </p>
-            <div className="mt-5 rounded-2xl border border-[var(--border)] bg-white/50 p-4">
-              <UpdateInterestForm cartItems={cartItems} pageLabel="Cart drawer" variant="compact" />
-            </div>
+          <p className="mt-2 text-xs leading-5 text-[var(--muted-foreground)]">
+            {dictionary.cart.pricingNotice}
+          </p>
+          <div className="mt-5 rounded-2xl border border-[var(--border)] bg-white/50 p-4">
+            <UpdateInterestForm
+              cartItems={cartItems}
+              pageLabel="Cart drawer"
+              variant="compact"
+            />
           </div>
+        </div>
       </aside>
     </div>,
     document.body,

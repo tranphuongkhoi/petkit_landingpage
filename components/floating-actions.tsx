@@ -3,10 +3,7 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { ChevronUp, MessageCircle, Send, X } from "lucide-react";
 import { useAppPreferences } from "@/components/providers/app-preferences";
-import {
-  readStoredArray,
-  type StoredCartItem,
-} from "@/lib/cart-storage";
+import { readStoredArray, type StoredCartItem } from "@/lib/cart-storage";
 import { type ChatMessage } from "@/lib/floating-actions-content";
 import { LOCALSTORAGE_MAX_HISTORY, STORAGE_KEYS } from "@/lib/constants";
 import { productCatalog } from "@/lib/product-catalog";
@@ -60,7 +57,8 @@ export function FloatingActions() {
           ),
         );
       }
-    } catch (error) { console.error("LocalStorage read failed", error);
+    } catch (error) {
+      console.error("LocalStorage read failed", error);
       setMessages([]);
     } finally {
       setChatHydrated(true);
@@ -111,7 +109,10 @@ export function FloatingActions() {
     setInput("");
 
     if (pendingLead) {
-      setMessages((current) => [...current, { from: "user", text: trimmedText }]);
+      setMessages((current) => [
+        ...current,
+        { from: "user", text: trimmedText },
+      ]);
 
       if (isLeadConfirmation(trimmedText)) {
         setSubmitting(true);
@@ -195,7 +196,9 @@ export function FloatingActions() {
 
       if (!response.ok || !reply) {
         const error = new Error(data.error ?? "Assistant unavailable");
-        error.name = data.fallbackAvailable ? "AssistantFallbackAvailable" : "AssistantUnavailable";
+        error.name = data.fallbackAvailable
+          ? "AssistantFallbackAvailable"
+          : "AssistantUnavailable";
         throw error;
       }
 
@@ -363,18 +366,17 @@ function getAssistantContext() {
       quantity: item.quantity,
     }),
   );
-  const saved = readStoredArray<WishlistEntry>(
-    STORAGE_KEYS.wishlist,
-    [],
-  ).map((item) => {
-    const id = typeof item === "string" ? item : item.id;
-    const name = typeof item === "string" ? undefined : item.name;
-    const product = productCatalog.find((entry) => entry.id === id);
+  const saved = readStoredArray<WishlistEntry>(STORAGE_KEYS.wishlist, []).map(
+    (item) => {
+      const id = typeof item === "string" ? item : item.id;
+      const name = typeof item === "string" ? undefined : item.name;
+      const product = productCatalog.find((entry) => entry.id === id);
 
-    return {
-      name: name ?? product?.name ?? id,
-    };
-  });
+      return {
+        name: name ?? product?.name ?? id,
+      };
+    },
+  );
 
   return {
     cart,
@@ -398,20 +400,51 @@ function getCurrentPageLabel() {
   return pathname;
 }
 
+const LEAD_STOPWORDS = new Set([
+  "tên",
+  "của",
+  "tôi",
+  "mình",
+  "em",
+  "toi",
+  "ten",
+  "name",
+  "my",
+  "là",
+  "la",
+  "is",
+  "và",
+  "and",
+  "còn",
+  "email",
+  "mail",
+]);
+
 function extractLeadContact(message: string) {
-  const email = message.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0];
+  const email = message.match(
+    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+  )?.[0];
   if (!email) return null;
 
-  const beforeEmail = message
-    .slice(0, message.indexOf(email))
-    .replace(/(?:,?\s*(?:còn|and)?\s*(?:email|mail|địa chỉ email)\s*(?:là|is|:)?\s*)$/i, "");
+  // Strip the email, then strip "email/mail (của tôi/mình/em) (là/:)" wherever
+  // it appears in the sentence — not just immediately before the email — so
+  // natural phrasing like "email của tôi là ..." no longer breaks extraction.
+  const withoutEmail = message.replace(email, " ");
+  const cleanedMessage = withoutEmail
+    .replace(
+      /(?:địa chỉ\s+)?(?:email|mail)(?:\s+(?:của\s+)?(?:tôi|mình|em))?\s*(?:là|is|:)?/gi,
+      " ",
+    )
+    .replace(/\s+/g, " ")
+    .trim();
+
   const namePatterns = [
-    /(?:tên(?:\s+của)?\s+(?:tôi|mình|em)?\s*(?:là)?|mình\s+là|tôi\s+là|em\s+là|toi\s+la|ten\s+toi\s+la|my\s+name\s+is|i\s+am|i'm)\s+([^,.;\n]+)$/i,
-    /^([^,.;\n]+?)(?:\s*,?\s*(?:còn|email|mail|and|,)\s*)?$/i,
+    /(?:tên(?:\s+của)?\s+(?:tôi|mình|em)?\s*(?:là)?|mình\s+là|tôi\s+là|em\s+là|toi\s+la|ten\s+toi\s+la|my\s+name\s+is|i\s+am|i'm)\s*[:]?\s*([^,.;\n]+)/i,
+    /^([^,.;\n]+)/i,
   ];
 
   for (const pattern of namePatterns) {
-    const match = beforeEmail.match(pattern);
+    const match = cleanedMessage.match(pattern);
     const candidate = normalizeLeadName(match?.[1] ?? "");
 
     if (candidate) return { email, name: candidate };
@@ -421,11 +454,16 @@ function extractLeadContact(message: string) {
 }
 
 function normalizeLeadName(value: string) {
+  // Token-based stopword strip instead of \b(...)\b: JavaScript's \b treats
+  // accented vowels (à, ì, ...) as non-word characters, so \bvà\b / \blà\b
+  // never actually matched and left stray connector words in the name.
   const cleaned = value
-    .replace(/^(?:tên(?:\s+của)?\s+(?:tôi|mình|em)?|ten\s+toi|name|my\s+name)\s*/i, " ")
-    .replace(/\b(?:còn|email|mail|and|is|là|la)\b/gi, " ")
-    .replace(/[:：]/g, " ")
-    .replace(/\s+/g, " ")
+    .split(/\s+/)
+    .filter((token) => {
+      const bare = token.replace(/[:：,.]/g, "").toLowerCase();
+      return bare.length > 0 && !LEAD_STOPWORDS.has(bare);
+    })
+    .join(" ")
     .trim();
 
   if (cleaned.length < 2) return "";
@@ -532,4 +570,3 @@ async function submitLead(
 
   if (!response.ok) throw new Error("Assistant lead submit failed");
 }
-

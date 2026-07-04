@@ -21,12 +21,27 @@ export const rootMetadata: Metadata = {
       "A product landing page for PETKIT Pura Max 2 and the Smart Cat Care ecosystem.",
     type: "website",
     url: siteUrl,
+    images: [
+      {
+        url: "/cover.png",
+        width: 512,
+        height: 512,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PETKIT Pura Max 2 | Smart Cat Care",
+    description:
+      "A product landing page for PETKIT Pura Max 2 and the Smart Cat Care ecosystem.",
+    images: ["/cover.png"],
   },
 };
 
 export const productsPageMetadata = {
   title: "PETKIT Products | Smart Cat Care",
-  description: "Browse PETKIT litter care, feeding, and hydration products in one smart cat care lineup.",
+  description:
+    "Browse PETKIT litter care, feeding, and hydration products in one smart cat care lineup.",
   alternates: {
     canonical: "/products",
   },
