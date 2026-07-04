@@ -37,6 +37,7 @@ const OPENROUTER_MODELS = [
   process.env.OPENROUTER_MODEL_FALLBACK ??
     "nvidia/nemotron-3-nano-30b-a3b:free",
 ];
+const ASSISTANT_PROVIDER = process.env.ASSISTANT_PROVIDER ?? "groq";
 
 function sanitizeHistory(history: unknown): ChatTurn[] {
   if (!Array.isArray(history)) return [];
@@ -94,6 +95,26 @@ export async function POST(request: Request) {
         content: message,
       },
     ];
+
+    if (ASSISTANT_PROVIDER === "openrouter") {
+      const forcedOpenRouterResult = await requestOpenRouter(messages);
+
+      if (forcedOpenRouterResult.reply) {
+        return NextResponse.json({
+          reply: forcedOpenRouterResult.reply,
+          mode: forcedOpenRouterResult.model,
+          provider: "openrouter",
+        });
+      }
+
+      return NextResponse.json(
+        {
+          error: "assistant_openrouter_unavailable",
+          fallbackAvailable: false,
+        },
+        { status: 502 },
+      );
+    }
 
     const groqResult = await requestGroq(messages);
 
