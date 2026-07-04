@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "eyebrow": "Chăm sóc mèo thông minh",
+    "headline": "Nhà vệ sinh tự làm sạch cho mèo.",
+    "body": "Pura Max 2 là nhà vệ sinh mèo tự động, giúp routine trong nhà yên tĩnh hơn và sạch sẽ hơn mỗi ngày.",
+    "primaryCta": "Khám phá Pura Max 2",
+    "secondaryCta": "Xem hệ sinh thái",
+    "stats": {
+      "76L": "76L",
+      "XL capacity": "Dung tích XL",
+      "7L": "7L",
+      "Waste bin": "Khay thải",
+      "2.4GHz": "2.4GHz",
+      "Wi-Fi": "Wi-Fi"
+    }
+  },
+  "features": {
+    "heading": "Thiết kế cho routine sạch hơn.",
+    "body": "Từng chi tiết của Pura Max 2 hướng tới việc giảm dọn thủ công hằng ngày, giữ routine vệ sinh an toàn hơn, êm hơn và dễ theo dõi hơn.",
+    "items": {
+      "App-connected routine logs": {
+        "title": "Theo dõi routine qua ứng dụng",
+        "body": "Trạng thái thiết bị và lịch sử sử dụng được trình bày như dữ liệu chăm sóc hằng ngày, không phải chẩn đoán y tế."
+      },
+      "Automatic cleaning cycle": {
+        "title": "Chu trình tự làm sạch",
+        "body": "Được thiết kế để tách chất thải sau khi mèo sử dụng và giảm nhu cầu dọn khay mỗi ngày."
+      },
+      "Low-entry enclosed design": {
+        "title": "Thiết kế kín, lối vào thấp",
+        "body": "Lối vào 200 mm giúp sản phẩm phù hợp hơn với mèo cần bước vào dễ hơn so với các mẫu hộp kín cao."
+      },
+      "Odor-control accessories": {
+        "title": "Phụ kiện kiểm soát mùi",
+        "body": "Khay chất thải kín, xịt thông minh K3 và khử mùi N50 2.0 hỗ trợ không gian trong nhà sạch hơn mà không hứa hẹn triệt mùi tuyệt đối."
+      },
+      "Quiet daily operation": {
+        "title": "Vận hành hằng ngày êm hơn",
+        "body": "Thông số 35 dB hỗ trợ routine vệ sinh yên tĩnh hơn cho nhà hoặc căn hộ có diện tích nhỏ."
+      },
+      "Safety sensor system": {
+        "title": "Hệ thống cảm biến an toàn",
+        "body": "Cảm biến hỗ trợ kiểm soát chu trình làm sạch quanh thói quen sử dụng hằng ngày của mèo."
+      }
+    }
+  },
+  "specs": {
+    "heading": "Thông số chính",
+    "body": "Thông số phần cứng cốt lõi của Pura Max 2 (P9902)."
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "gallery": {
+    "body": "Pura Max 2 được trình bày qua những điểm người dùng quan tâm nhất: lối vào thấp, vận hành êm, kiểm soát mùi, theo dõi qua ứng dụng và độ tương thích với cát vệ sinh.",
+    "eyebrow": "Hình ảnh sản phẩm",
+    "title": "Góc nhìn rõ hơn về routine hằng ngày."
+  },
+  "galleryTitles": {
+    "35 dB routine": "Routine 35 dB",
+    "App visibility": "Theo dõi qua ứng dụng",
+    "Hero view": "Góc nhìn chính",
+    "Litter fit": "Tương thích cát",
+    "Low entry": "Lối vào thấp",
+    "Odor control": "Kiểm soát mùi"
+  },
+  "productDescriptions": {
+    "puramax-2": "Nhà vệ sinh mèo tự động dạng kín với lối vào thấp 200 mm, Wi-Fi 2.4GHz, theo dõi qua ứng dụng, độ ồn 35 dB và 11 cảm biến an toàn.",
+    "purobot-max-pro-2": "Nhà vệ sinh mèo có camera hỗ trợ nhận diện nhiều mèo và theo dõi sự kiện rõ hơn, kèm khay chất thải 8L và Wi-Fi băng tần kép.",
+    "purobot-crystal-duo": "Thiết kế mở với lối vào thấp nhất trong nhóm so sánh và quy trình dùng khay cát tinh thể PETKIT riêng.",
+    "yumshare-solo": "Máy cho ăn thông minh với hộp chứa thức ăn khô 3L, lịch bữa ăn, camera 1080p, nhìn đêm và đàm thoại hai chiều.",
+    "eversweet-max-2": "Đài nước lọc không dây với dung tích 3L, pin 5000 mAh, độ ồn 26 dB, cảm biến chuyển động và theo dõi qua ứng dụng."
+  },
+  "sections": {
+    "ecosystemBody": "Kết hợp vệ sinh tự động, cho ăn thông minh và nước sạch trong một routine PETKIT liền mạch.",
+    "ecosystemHeading": "Hoàn thiện hệ sinh thái chăm sóc mèo thông minh",
+    "litterBoxBody": "Ba mẫu nhà vệ sinh PETKIT trong cùng một nhóm. Chọn kích thước, kiểu dáng và tính năng phù hợp với không gian nhà bạn.",
+    "litterBoxHeading": "Nhóm nhà vệ sinh mèo tự động"
+  },
+  "specValues": {
+    "Not applicable": "Không áp dụng",
+    "1-10 meals/day": "1-10 bữa/ngày",
+    "1-5 portions/meal": "1-5 khẩu phần/bữa",
+    "1080p with night vision": "1080p kèm nhìn đêm",
+    "Two-way audio; voice call up to 20 seconds": "Âm thanh hai chiều; ghi âm giọng nói tối đa 20 giây",
+    "5 AAA batteries, up to 14 days": "5 pin AAA, tối đa 14 ngày",
+    "Dry or freeze-dried food only; max 12 mm kibble": "Chỉ dùng thức ăn khô hoặc đông khô; hạt tối đa 12 mm",
+    "Confirm Solo vs Solo 2 before publishing Wi-Fi band": "Cần xác nhận Solo hay Solo 2 trước khi công bố băng tần Wi-Fi",
+    "Up to 83 days": "Tối đa 83 ngày",
+    "About 10 cm range; 1-minute water flow": "Khoảng 10 cm; nước chảy trong 1 phút",
+    "Heat-resistant PPO, 304 stainless steel tray": "PPO chịu nhiệt, khay thép không gỉ 304",
+    "No UVC claim unless UVC variant is confirmed": "Không nêu UVC nếu chưa xác nhận đúng phiên bản UVC",
+    "AI camera for identity and image-based routine visibility": "Camera AI hỗ trợ nhận diện và theo dõi routine bằng hình ảnh",
+    "Up to 15 cats": "Tối đa 15 mèo",
+    "Behavior/image monitoring only; not veterinary diagnosis": "Chỉ theo dõi hành vi/hình ảnh; không phải chẩn đoán thú y",
+    "Up to 17 days for one-cat households; varies by use and environment": "Tối đa 17 ngày với gia đình một mèo; thay đổi theo tần suất dùng và môi trường",
+    "ABS, silicone": "ABS, silicone",
+    "PETKIT Crystal Litter tray only; not regular litter": "Chỉ dùng khay PETKIT Crystal Litter; không dùng cát thường",
+    "Image/routine monitoring only; no disease claim": "Chỉ theo dõi hình ảnh/routine; không tuyên bố phát hiện bệnh",
+    "Most clumping litter; avoid crystal litter and particles over 12 mm": "Phù hợp với đa số cát vón; tránh cát tinh thể và hạt dài hơn 12 mm",
+    "Up to 15 days for one-cat households; varies by use and weather": "Tối đa 15 ngày với gia đình một mèo; thay đổi theo tần suất dùng và thời tiết",
+    "Sealed waste bin + K3 smart spray + N50 2.0 deodorizer": "Khay thải kín + xịt K3 smart spray + khử mùi N50 2.0"
+  },
+  "faqs": {
+    "puramax-2": [
+      {
+        "question": "Mèo con có dùng Pura Max 2 được không?",
+        "answer": "Không khuyến nghị dùng cho mèo dưới 1,5 kg. Nếu nhà có cả mèo con và mèo trưởng thành, nên làm theo hướng dẫn bảo vệ mèo con trong tài liệu chính thức."
+      },
+      {
+        "question": "Nên đặt Pura Max 2 ở đâu?",
+        "answer": "Đặt sản phẩm trên bề mặt cứng, phẳng và ổn định. Tránh thảm mềm và không chặn lối mèo đi vào."
+      },
+      {
+        "question": "Nếu Wi-Fi mất kết nối thì sao?",
+        "answer": "Các thiết lập đã cài có thể tiếp tục chạy, nhưng dữ liệu trong ứng dụng sẽ không cập nhật cho đến khi thiết bị kết nối lại."
+      },
+      {
+        "question": "Pura Max 2 dùng loại cát nào?",
+        "answer": "Dùng đa số cát vón. Tránh cát tinh thể và hạt dài hơn 12 mm; nên kiểm tra hướng dẫn chính thức trước khi thử loại cát mới."
+      },
+      {
+        "question": "Bao lâu nên dọn khay chất thải?",
+        "answer": "Dữ liệu phòng lab PETKIT nêu tối đa khoảng 15 ngày với một mèo, nhưng thực tế phụ thuộc số lượng mèo, tần suất dùng, nhiệt độ và độ ẩm."
+      },
+      {
+        "question": "Thiết bị có chẩn đoán sức khỏe không?",
+        "answer": "Không. Dữ liệu ứng dụng và routine chỉ dùng để tham khảo chăm sóc hằng ngày. Pura Max 2 không phải thiết bị chẩn đoán thú y và không thay thế tư vấn từ bác sĩ thú y."
+      }
+    ],
+    "purobot-max-pro-2": [
+      {
+        "question": "Purobot Max Pro 2 phù hợp với ai?",
+        "answer": "Phù hợp với nhà có nhiều mèo và cần theo dõi routine bằng camera, nhận diện từng mèo, khay thải 8L và Wi-Fi 2.4/5GHz."
+      },
+      {
+        "question": "Thông số nào cần xem trước khi chọn?",
+        "answer": "Nên xem khay thải 8L, 12 cảm biến, Wi-Fi 2.4/5GHz, camera AI và lưu ý rằng dữ liệu hình ảnh không phải chẩn đoán y tế."
+      },
+      {
+        "question": "Giá, bảo hành và tình trạng hàng đã cố định chưa?",
+        "answer": "Giá đang là mức tham chiếu cho trải nghiệm sản phẩm. Tình trạng hàng, bảo hành và giá cuối có thể thay đổi theo thị trường và kênh mua."
+      }
+    ],
+    "purobot-crystal-duo": [
+      {
+        "question": "Purobot Crystal Duo phù hợp với ai?",
+        "answer": "Phù hợp với nhà ưu tiên lối vào thấp, thiết kế mở và quy trình dùng khay PETKIT Crystal Litter riêng."
+      },
+      {
+        "question": "Thông số nào cần xem trước khi chọn?",
+        "answer": "Nên xem lối vào 180 mm, khoang 70L, độ ồn 40 dB, Wi-Fi 2.4/5GHz và ràng buộc khay PETKIT Crystal Litter."
+      },
+      {
+        "question": "Giá, bảo hành và tình trạng hàng đã cố định chưa?",
+        "answer": "Giá đang là mức tham chiếu cho trải nghiệm sản phẩm. Tình trạng hàng, bảo hành và giá cuối có thể thay đổi theo thị trường và kênh mua."
+      }
+    ],
+    "yumshare-solo": [
+      {
+        "question": "YumShare Solo phù hợp với ai?",
+        "answer": "Phù hợp làm sản phẩm bổ trợ cho routine cho ăn khô theo lịch, chia khẩu phần và kiểm tra từ xa qua camera."
+      },
+      {
+        "question": "Thông số nào cần xem trước khi chọn?",
+        "answer": "Nên xem dung tích 3L, lịch bữa ăn, khoảng khẩu phần, camera 1080p, âm thanh hai chiều và giới hạn kích thước hạt thức ăn."
+      },
+      {
+        "question": "Giá, bảo hành và tình trạng hàng đã cố định chưa?",
+        "answer": "Giá đang là mức tham chiếu cho trải nghiệm sản phẩm. Tình trạng hàng, bảo hành và giá cuối có thể thay đổi theo thị trường và kênh mua."
+      }
+    ],
+    "eversweet-max-2": [
+      {
+        "question": "Eversweet Max 2 phù hợp với ai?",
+        "answer": "Phù hợp làm sản phẩm bổ trợ cấp nước không dây cho nhà muốn hỗ trợ nước lọc và theo dõi routine qua ứng dụng."
+      },
+      {
+        "question": "Thông số nào cần xem trước khi chọn?",
+        "answer": "Nên xem dung tích 3L, pin 5000 mAh, thời lượng không dây, độ ồn 26 dB, cảm biến chuyển động và điều khiển qua ứng dụng."
+      },
+      {
+        "question": "Giá, bảo hành và tình trạng hàng đã cố định chưa?",
+        "answer": "Giá đang là mức tham chiếu cho trải nghiệm sản phẩm. Tình trạng hàng, bảo hành và giá cuối có thể thay đổi theo thị trường và kênh mua."
+      }
+    ]
+  },
+  "whyItFits": {
+    "puramax-2": [
+      {
+        "title": "Êm hơn trong sinh hoạt",
+        "body": "Chu trình 35 dB giúp routine vệ sinh yên tĩnh hơn vào buổi sáng, buổi tối và trong không gian nhỏ."
+      },
+      {
+        "title": "An toàn được cân nhắc",
+        "body": "11 cảm biến hỗ trợ theo dõi trọng lượng, chuyển động và tiếp cận trước khi chu trình vệ sinh tiếp tục."
+      },
+      {
+        "title": "Phù hợp trong nhà",
+        "body": "Lối vào thấp 200 mm và dáng kín giúp mèo sử dụng thoải mái mỗi ngày mà không cần nâng cấp lên bản camera."
+      }
+    ],
+    "purobot-max-pro-2": [
+      {
+        "title": "Theo dõi rõ hơn",
+        "body": "Camera hỗ trợ theo dõi giúp nhà cần thêm bối cảnh về các lần mèo sử dụng nhà vệ sinh."
+      },
+      {
+        "title": "Rõ hơn cho nhà nhiều mèo",
+        "body": "Các tính năng nhận diện giúp đây là hướng nâng cấp khi nhiều mèo dùng chung một routine."
+      },
+      {
+        "title": "Dung lượng rộng hơn",
+        "body": "Khoang lớn và khay thải lớn hơn phù hợp với nhà cần nhiều dung lượng tự động."
+      }
+    ],
+    "purobot-crystal-duo": [
+      {
+        "title": "Lối vào thấp nhất",
+        "body": "Thiết kế mở và lối vào 180 mm phù hợp với nhà ưu tiên mèo dễ tiếp cận."
+      },
+      {
+        "title": "Routine dùng khay riêng",
+        "body": "Khay crystal phù hợp với người thích quy trình thay khay tiện hơn."
+      },
+      {
+        "title": "Dáng mở thoáng hơn",
+        "body": "Kiểu dáng mở phù hợp với mèo không thích nhà vệ sinh dạng kín."
+      }
+    ],
+    "yumshare-solo": [
+      {
+        "title": "Bữa ăn theo lịch",
+        "body": "Chia khẩu phần giúp routine cho ăn ổn định hơn trong ngày."
+      },
+      {
+        "title": "Gọn trên mặt bàn",
+        "body": "Thân máy nhỏ gọn phù hợp làm thiết bị bổ trợ bên cạnh routine vệ sinh mèo."
+      },
+      {
+        "title": "Kiểm tra từ xa",
+        "body": "Camera hỗ trợ quan sát các lần cho ăn khi bạn không ở nhà."
+      }
+    ],
+    "eversweet-max-2": [
+      {
+        "title": "Đặt linh hoạt",
+        "body": "Pin không dây giúp đài nước dễ đặt ở nơi mèo thường uống."
+      },
+      {
+        "title": "Nhịp nước sạch",
+        "body": "Lọc nước bổ trợ tự nhiên cho routine vệ sinh và cho ăn đã lên lịch."
+      },
+      {
+        "title": "Routine qua ứng dụng",
+        "body": "Theo dõi qua app giúp routine châm nước và chăm sóc hằng ngày bình tĩnh hơn."
+      }
+    ]
+  }
+}

@@ -2,12 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FloatingActions } from "@/components/floating-actions";
+import {
+  CategoryLabel,
+  LocalizedPrice,
+  ProductDescription,
+  ProductLabel,
+  RoleLabel,
+  SpecLabel,
+  SpecValue,
+} from "@/components/i18n/localized-product-text";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { ProductActionBar, RecentlyViewedTracker } from "@/components/product/actions";
 import { ProductCompare } from "@/components/product/compare";
 import { ProductFaq } from "@/components/product/faq";
 import { ProductGallery } from "@/components/product/gallery";
 import { ProductSuite } from "@/components/product/suite";
+import { ProductWhyItFits } from "@/components/product/why-it-fits";
 import landingContent from "@/content/landing-content.json";
 import {
   detailRouteNav,
@@ -15,12 +25,11 @@ import {
   getDefaultFaqs,
   getDetailCaveats,
   getDetailSpecs,
-  getSpecsHeading,
   productFaqs,
   puraMaxGallery,
   whyItFits,
 } from "@/lib/product-detail-content";
-import { formatProductPrice, formatUsd, getProductBySlug, productCatalog } from "@/lib/product-catalog";
+import { getProductBySlug, productCatalog } from "@/lib/product-catalog";
 import type { ProductDetailPageProps } from "@/types/route-props";
 
 export function generateStaticParams() {
@@ -56,7 +65,12 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   const relatedProducts = productCatalog.filter((item) => item.id !== product.id);
   const comparisonProducts = getComparisonProducts(product.id);
   const specs = getDetailSpecs(product);
-  const specsHeading = getSpecsHeading(product);
+  const specsHeadingKey =
+    product.id === "yumshare-solo"
+      ? "specsHeadingFeeding"
+      : product.id === "eversweet-max-2"
+        ? "specsHeadingHydration"
+        : "specsHeadingLitter";
   const caveats = getDetailCaveats(product);
   const faqs = productFaqs[product.id] ?? getDefaultFaqs(product);
   const galleryImages = product.id === "puramax-2" ? puraMaxGallery : [];
@@ -74,27 +88,31 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
           <span className="mr-2" aria-hidden="true">
             ←
           </span>
-          The lineup
+          <ProductLabel value="lineupEyebrow" />
         </Link>
 
         <section className="grid gap-12 pt-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(24rem,0.85fr)] lg:items-center">
           <div>
             <span className="inline-flex rounded-full border border-[var(--border)] bg-white/55 px-3 py-1 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
-              {product.role}
+              <RoleLabel value={product.role} />
             </span>
             <p className="mt-8 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
-              {product.category}
+              <CategoryLabel value={product.category} />
             </p>
             <h1 className="mt-3 font-serif text-5xl leading-tight sm:text-6xl">{product.name}</h1>
             <div className="mt-6 flex flex-wrap items-end gap-3">
-              <p className="font-display text-3xl font-bold text-[var(--primary)]">{formatProductPrice(product)}</p>
+              <p className="font-display text-3xl font-bold text-[var(--primary)]">
+                <LocalizedPrice value={product.priceUsd} />
+              </p>
               {product.regularPriceUsd ? (
                 <p className="pb-1 text-base font-semibold text-[var(--muted-foreground)] line-through">
-                  {formatUsd(product.regularPriceUsd)}
+                  <LocalizedPrice value={product.regularPriceUsd} />
                 </p>
               ) : null}
             </div>
-            <p className="mt-8 max-w-xl text-lg leading-8 text-[var(--muted-foreground)]">{product.description}</p>
+            <p className="mt-8 max-w-xl text-lg leading-8 text-[var(--muted-foreground)]">
+              <ProductDescription fallback={product.description} productId={product.id} />
+            </p>
             <div className="mt-8">
               <ProductActionBar product={product} />
             </div>
@@ -119,10 +137,14 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
         <section className="mt-24 border-y border-[var(--border)] py-16">
           <div className="grid gap-10 lg:grid-cols-[0.36fr_1fr]">
             <div>
-              <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">Specifications</p>
-              <h2 className="mt-5 max-w-sm font-serif text-4xl leading-tight">{specsHeading}</h2>
+              <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">
+                <ProductLabel value="detailSpecsEyebrow" />
+              </p>
+              <h2 className="mt-5 max-w-sm font-serif text-4xl leading-tight">
+                <ProductLabel value={specsHeadingKey} />
+              </h2>
               <p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted-foreground)]">
-                Key numbers are kept close to the product data source so the page stays maintainable as the lineup grows.
+                <ProductLabel value="detailSpecsBody" />
               </p>
             </div>
             <div>
@@ -132,8 +154,12 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                     key={spec.label}
                     className="grid grid-cols-[minmax(7rem,0.55fr)_1fr] gap-4 border-b border-[var(--border)] py-5 md:odd:border-r md:odd:pr-7 md:even:pl-7"
                   >
-                    <dt className="text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">{spec.label}</dt>
-                    <dd className="text-lg font-bold leading-snug">{spec.value}</dd>
+                    <dt className="text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
+                      <SpecLabel value={spec.label} />
+                    </dt>
+                    <dd className="text-lg font-bold leading-snug">
+                      <SpecValue value={spec.value} />
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -141,7 +167,10 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                 <div className="mt-7 space-y-3">
                   {caveats.map((caveat) => (
                     <p key={caveat.label} className="text-sm leading-6 text-[var(--muted-foreground)]">
-                      <span className="font-bold text-[var(--foreground)]">{caveat.label}:</span> {caveat.value}
+                      <span className="font-bold text-[var(--foreground)]">
+                        <SpecLabel value={caveat.label} />:
+                      </span>{" "}
+                      <SpecValue value={caveat.value} />
                     </p>
                   ))}
                 </div>
@@ -153,22 +182,13 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
         <ProductGallery images={galleryImages} />
 
         <ProductFaq
-          body="Short answers for fit, daily use, and claim-safe product expectations."
+          body={<ProductLabel value="detailFaqBody" />}
           items={faqs}
-          title={`${product.name} FAQ.`}
+          productId={product.id}
+          title={<><span>{product.name}</span> <ProductLabel value="productFaq" />.</>}
         />
 
-        <section className="mt-24">
-          <h2 className="font-serif text-4xl leading-tight">Why it fits</h2>
-          <div className="mt-10 grid gap-10 md:grid-cols-3">
-            {(whyItFits[product.id] ?? [{ title: product.role, body: product.fit }]).map((item) => (
-              <article key={item.title}>
-                <h3 className="font-display text-lg font-bold">{item.title}</h3>
-                <p className="mt-4 text-sm leading-6 text-[var(--muted-foreground)]">{item.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        <ProductWhyItFits fallbackItems={whyItFits[product.id] ?? [{ title: product.role, body: product.fit }]} productId={product.id} />
 
         <ProductCompare currentProductId={product.id} products={comparisonProducts} />
         <ProductSuite products={relatedProducts} />

@@ -1,0 +1,10 @@
+{
+  "error": "I can only help with PETKIT product fit, specs, cart/update flow, and care routines from this project.",
+  "empty": "Ask about product fit, specs, care routines, or availability.",
+  "placeholder": "Ask about PETKIT products...",
+  "prompts": ["Pura Max 2", "Compare models", "Care routine", "Availability"],
+  "thinking": "Checking PETKIT data...",
+  "subtitle": "Care and product guidance",
+  "unavailable": "The assistant is temporarily unavailable. Please try again in a moment.",
+  "title": "PETKIT Assistant"
+}

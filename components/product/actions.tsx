@@ -5,6 +5,9 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { Check, Heart, Minus, Plus, ShoppingCart, X } from "lucide-react";
+import { UpdateInterestForm } from "@/components/forms/form";
+import { LocalizedPrice, RoleLabel } from "@/components/i18n/localized-product-text";
+import { useAppPreferences } from "@/components/providers/app-preferences";
 import {
   CART_STORAGE_KEY,
   CART_UPDATED_EVENT,
@@ -17,9 +20,10 @@ import {
   type StoredCartItem,
   writeCart,
 } from "@/lib/cart-storage";
-import { formatUsd, type ProductCatalogItem } from "@/lib/product-catalog";
+import type { ProductCatalogItem } from "@/lib/product-catalog";
 
 export function ProductActionBar({ product }: { product: ProductCatalogItem }) {
+  const { dictionary } = useAppPreferences();
   const [added, setAdded] = useState(false);
   const [wishlisted, setWishlisted] = useState(false);
 
@@ -69,7 +73,7 @@ export function ProductActionBar({ product }: { product: ProductCatalogItem }) {
         onClick={addToCart}
       >
         {added ? <Check className="mr-2 h-4 w-4" aria-hidden="true" /> : <Plus className="mr-2 h-4 w-4" aria-hidden="true" />}
-        {added ? "Added" : "Add to cart"}
+        {added ? dictionary.common.added : dictionary.common.add}
       </button>
       <button
         className="inline-flex items-center rounded-full border border-[var(--border)] bg-white/50 px-5 py-3 text-sm font-bold text-[var(--primary)] transition hover:bg-[var(--card)]"
@@ -77,11 +81,11 @@ export function ProductActionBar({ product }: { product: ProductCatalogItem }) {
         onClick={toggleWishlist}
       >
         <Heart className={["mr-2 h-4 w-4", wishlisted ? "fill-[var(--primary)]" : ""].join(" ")} aria-hidden="true" />
-        {wishlisted ? "Saved" : "Save"}
+        {wishlisted ? dictionary.common.saved : dictionary.common.save}
       </button>
       {added ? (
         <div className="absolute -bottom-12 left-0 rounded-full border border-[var(--border)] bg-white px-4 py-2 text-xs font-bold text-[var(--foreground)] shadow-lg">
-          Added to cart
+          {dictionary.common.added}
         </div>
       ) : null}
     </div>
@@ -221,32 +225,26 @@ export function StoredProductStatus({ products }: { products: ProductCatalogItem
 
   return (
     <aside className="grid gap-7">
-      <ProductStatusList
-        title="Saved"
-        emptyText="Saved products appear here after you tap Save."
-        items={wishlistItems}
-      />
-      <ProductStatusList
-        title="Recently viewed"
-        emptyText="Product pages appear here after you open them."
-        items={recentItems}
-      />
+      <ProductStatusList emptyTextKey="savedEmpty" items={wishlistItems} titleKey="saved" />
+      <ProductStatusList emptyTextKey="recentEmpty" items={recentItems} titleKey="recent" />
     </aside>
   );
 }
 
 function ProductStatusList({
-  emptyText,
+  emptyTextKey,
   items,
-  title,
+  titleKey,
 }: {
-  emptyText: string;
+  emptyTextKey: "recentEmpty" | "savedEmpty";
   items: ProductCatalogItem[];
-  title: string;
+  titleKey: "recent" | "saved";
 }) {
+  const { dictionary } = useAppPreferences();
+
   return (
     <section className="max-h-72 overflow-y-auto rounded-[1.35rem] border border-[var(--border)] bg-white/45 p-5 shadow-sm">
-      <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">{title}</p>
+      <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">{dictionary.cart[titleKey]}</p>
       <div className="mt-4 grid gap-3">
         {items.length > 0 ? (
           items.map((product) => (
@@ -264,12 +262,14 @@ function ProductStatusList({
               </div>
               <div className="min-w-0">
                 <p className="truncate text-xs font-bold text-[var(--foreground)]">{product.name}</p>
-                <p className="truncate text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">{product.role}</p>
+                <p className="truncate text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
+                  <RoleLabel value={product.role} />
+                </p>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-xs leading-5 text-[var(--muted-foreground)]">{emptyText}</p>
+          <p className="text-xs leading-5 text-[var(--muted-foreground)]">{dictionary.cart[emptyTextKey]}</p>
         )}
       </div>
     </section>
@@ -289,6 +289,7 @@ export function CartDrawer({
   onRemove: (id: string) => void;
   open: boolean;
 }) {
+  const { dictionary } = useAppPreferences();
   const totalItems = getCartItemCount(cartItems);
   const totalPrice = cartItems.reduce((total, item) => total + getItemPrice(item) * item.quantity, 0);
 
@@ -316,8 +317,8 @@ export function CartDrawer({
       <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-[var(--border)] bg-[var(--background)] shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
           <div>
-            <p className="text-sm font-bold uppercase text-[var(--primary)]">Cart</p>
-            <h2 className="text-2xl font-bold">Selected products</h2>
+            <p className="text-sm font-bold uppercase text-[var(--primary)]">{dictionary.cart.title}</p>
+            <h2 className="text-2xl font-bold">{dictionary.cart.selectedProducts}</h2>
           </div>
           <button
             aria-label="Close cart"
@@ -356,15 +357,19 @@ export function CartDrawer({
                         <Link className="font-bold leading-snug hover:text-[var(--primary)]" href={`/products/${item.slug}`}>
                           {item.name}
                         </Link>
-                        <p className="mt-1 text-xs font-bold uppercase text-[var(--muted-foreground)]">{item.role}</p>
-                        <p className="mt-2 text-sm font-bold text-[var(--primary)]">{formatUsd(getItemPrice(item))}</p>
+                        <p className="mt-1 text-xs font-bold uppercase text-[var(--muted-foreground)]">
+                          <RoleLabel value={item.role} />
+                        </p>
+                        <p className="mt-2 text-sm font-bold text-[var(--primary)]">
+                          <LocalizedPrice value={getItemPrice(item)} />
+                        </p>
                       </div>
                       <button
                         className="text-xs font-bold uppercase text-[var(--muted-foreground)] transition hover:text-[var(--primary)]"
                         type="button"
                         onClick={() => onRemove(item.id)}
                       >
-                        Remove
+                        {dictionary.common.remove}
                       </button>
                     </div>
                     <div className="mt-4 flex items-center justify-between gap-3">
@@ -387,7 +392,9 @@ export function CartDrawer({
                           <Plus className="h-4 w-4" aria-hidden="true" />
                         </button>
                       </div>
-                      <p className="text-sm font-bold">{formatUsd(getItemPrice(item) * item.quantity)}</p>
+                      <p className="text-sm font-bold">
+                        <LocalizedPrice value={getItemPrice(item) * item.quantity} />
+                      </p>
                     </div>
                   </div>
                 </article>
@@ -396,9 +403,9 @@ export function CartDrawer({
           ) : (
             <div className="rounded-2xl border border-dashed border-[var(--border)] bg-white/55 p-6 text-center">
               <ShoppingCart className="mx-auto h-8 w-8 text-[var(--primary)]" aria-hidden="true" />
-              <p className="mt-3 font-bold">Your cart is empty</p>
+              <p className="mt-3 font-bold">{dictionary.cart.emptyTitle}</p>
               <p className="mt-2 text-sm leading-6 text-[var(--muted-foreground)]">
-                Add products from the PETKIT lineup to prepare an inquiry list.
+                {dictionary.cart.emptyBody}
               </p>
             </div>
           )}
@@ -406,13 +413,20 @@ export function CartDrawer({
 
         <div className="border-t border-[var(--border)] p-5">
           <div className="flex items-center justify-between text-sm">
-            <span className="font-bold uppercase text-[var(--muted-foreground)]">{totalItems} items</span>
-            <span className="font-display text-2xl font-bold text-[var(--primary)]">{formatUsd(totalPrice)}</span>
+            <span className="font-bold uppercase text-[var(--muted-foreground)]">
+              {totalItems} {dictionary.cart.items}
+            </span>
+            <span className="font-display text-2xl font-bold text-[var(--primary)]">
+              <LocalizedPrice value={totalPrice} />
+            </span>
           </div>
-          <p className="mt-2 text-xs leading-5 text-[var(--muted-foreground)]">
-            USD reference total. Final pricing can vary by market and purchase channel.
-          </p>
-        </div>
+            <p className="mt-2 text-xs leading-5 text-[var(--muted-foreground)]">
+              {dictionary.cart.pricingNotice}
+            </p>
+            <div className="mt-5 rounded-2xl border border-[var(--border)] bg-white/50 p-4">
+              <UpdateInterestForm cartItems={cartItems} pageLabel="Cart drawer" variant="compact" />
+            </div>
+          </div>
       </aside>
     </div>,
     document.body,

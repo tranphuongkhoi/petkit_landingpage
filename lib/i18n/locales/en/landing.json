@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "eyebrow": "Smart Cat Care",
+    "headline": "The litter box that cleans itself.",
+    "body": "Meet Pura Max 2, a self-cleaning cat litter box designed for a calmer home and a cleaner daily routine.",
+    "primaryCta": "Explore Pura Max 2",
+    "secondaryCta": "See the ecosystem",
+    "stats": {
+      "76L": "76L",
+      "XL capacity": "XL capacity",
+      "7L": "7L",
+      "Waste bin": "Waste bin",
+      "2.4GHz": "2.4GHz",
+      "Wi-Fi": "Wi-Fi"
+    }
+  },
+  "features": {
+    "heading": "Designed around cleaner routines.",
+    "body": "Every detail of Pura Max 2 is built to reduce daily scooping while keeping the litter routine safer, quieter, and easier to follow.",
+    "items": {
+      "App-connected routine logs": {
+        "title": "App-connected routine logs",
+        "body": "Usage and device status can be framed as routine visibility, not medical diagnosis."
+      },
+      "Automatic cleaning cycle": {
+        "title": "Automatic cleaning cycle",
+        "body": "Designed to separate waste after use and reduce the need for daily scooping."
+      },
+      "Low-entry enclosed design": {
+        "title": "Low-entry enclosed design",
+        "body": "A 200 mm entry height helps position the product for cats that need easier access than taller enclosed boxes."
+      },
+      "Odor-control accessories": {
+        "title": "Odor-control accessories",
+        "body": "The sealed waste bin, K3 smart spray, and N50 2.0 deodorizer support a cleaner indoor setup without promising zero odor."
+      },
+      "Quiet daily operation": {
+        "title": "Quiet daily operation",
+        "body": "The 35 dB operating claim supports a calmer litter routine for compact indoor homes."
+      },
+      "Safety sensor system": {
+        "title": "Safety sensor system",
+        "body": "Sensor-based protection helps keep cleaning routines controlled around daily cat use."
+      }
+    }
+  },
+  "specs": {
+    "heading": "Technical at a glance",
+    "body": "Production-ready hardware specs for the Pura Max 2 (P9902)."
+  }
+}

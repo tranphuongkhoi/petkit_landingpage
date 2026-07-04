@@ -4,9 +4,9 @@
     "href": "#top"
   },
   "nav": [
-    { "label": "Product", "href": "#product" },
     { "label": "Features", "href": "#features" },
     { "label": "Specs", "href": "#specs" },
+    { "label": "Product", "href": "#product" },
     { "label": "Ecosystem", "href": "#ecosystem" },
     { "label": "Contact", "href": "#contact" }
   ],

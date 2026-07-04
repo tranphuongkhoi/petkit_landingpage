@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
+import { AppPreferencesProvider } from "@/components/providers/app-preferences";
 import { rootMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
@@ -12,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <AppPreferencesProvider>{children}</AppPreferencesProvider>
         <Analytics />
       </body>
     </html>

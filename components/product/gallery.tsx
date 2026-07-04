@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useState } from "react";
+import { GalleryTitle, ProductDetailLabel } from "@/components/i18n/localized-product-text";
 import type { ProductGalleryProps } from "@/types/product-ui";
 
 export function ProductGallery({ images }: ProductGalleryProps) {
@@ -19,11 +20,14 @@ export function ProductGallery({ images }: ProductGalleryProps) {
     <section className="mt-24">
       <div className="grid gap-10 lg:grid-cols-[0.36fr_1fr] lg:items-start">
         <div>
-          <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">Product views</p>
-          <h2 className="mt-5 max-w-sm font-serif text-4xl leading-tight">A closer look at the daily routine.</h2>
+          <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">
+            <ProductDetailLabel value="eyebrow" />
+          </p>
+          <h2 className="mt-5 max-w-sm text-4xl font-bold leading-tight">
+            <ProductDetailLabel value="title" />
+          </h2>
           <p className="mt-5 max-w-md text-sm leading-6 text-[var(--muted-foreground)]">
-            Pura Max 2 is shown through the moments that matter most: entry comfort, quiet operation, odor control,
-            app visibility, and litter compatibility.
+            <ProductDetailLabel value="body" />
           </p>
         </div>
         <div>
@@ -67,7 +71,9 @@ export function ProductGallery({ images }: ProductGalleryProps) {
               </button>
             ))}
           </div>
-          <p className="mt-3 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">{activeImage.title}</p>
+          <p className="mt-3 text-[0.68rem] font-bold uppercase text-[var(--muted-foreground)]">
+            <GalleryTitle value={activeImage.title} />
+          </p>
         </div>
       </div>
 

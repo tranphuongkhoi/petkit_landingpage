@@ -1,20 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { ProductLabel } from "@/components/i18n/localized-product-text";
+import { useAppPreferences } from "@/components/providers/app-preferences";
 import type { ProductFaqProps } from "@/types/product-ui";
 
-export function ProductFaq({ body, items, title }: ProductFaqProps) {
+export function ProductFaq({ body, items, productId, title }: ProductFaqProps) {
+  const { dictionary } = useAppPreferences();
   const [openIndex, setOpenIndex] = useState(0);
+  const translatedItems = dictionary.productDetail.faqs[productId as keyof typeof dictionary.productDetail.faqs] ?? items;
 
   return (
     <section className="mt-24 grid gap-10 border-b border-[var(--border)] pb-16 lg:grid-cols-[0.36fr_1fr]">
       <div>
-        <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">Product FAQ</p>
+        <p className="text-[0.68rem] font-bold uppercase text-[var(--primary)]">
+          <ProductLabel value="productFaq" />
+        </p>
         <h2 className="mt-5 max-w-sm font-serif text-4xl leading-tight">{title}</h2>
         <p className="mt-5 max-w-sm text-sm leading-6 text-[var(--muted-foreground)]">{body}</p>
       </div>
       <div className="border-t border-[var(--border)]">
-        {items.map((item, index) => {
+        {translatedItems.map((item, index) => {
           const isOpen = openIndex === index;
 
           return (

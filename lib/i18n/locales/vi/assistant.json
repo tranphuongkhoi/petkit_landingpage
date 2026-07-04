@@ -1,0 +1,10 @@
+{
+  "error": "Tôi chỉ hỗ trợ các nội dung PETKIT trong dự án này: thông số, độ phù hợp, giỏ hàng/cập nhật và routine chăm sóc.",
+  "empty": "Hỏi về độ phù hợp, thông số, routine chăm sóc hoặc tình trạng sản phẩm.",
+  "placeholder": "Hỏi về sản phẩm PETKIT...",
+  "prompts": ["Pura Max 2", "So sánh mẫu", "Routine chăm sóc", "Tình trạng hàng"],
+  "thinking": "Đang kiểm tra dữ liệu PETKIT...",
+  "subtitle": "Tư vấn sản phẩm và chăm sóc",
+  "unavailable": "Trợ lý hiện chưa phản hồi được. Vui lòng thử lại sau giây lát.",
+  "title": "Trợ lý PETKIT"
+}
