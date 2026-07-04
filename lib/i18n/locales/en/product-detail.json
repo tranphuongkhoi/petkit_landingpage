@@ -1,0 +1,208 @@
+{
+  "gallery": {
+    "body": "Pura Max 2 is shown through the moments that matter most: entry comfort, quiet operation, odor control, app visibility, and litter compatibility.",
+    "eyebrow": "Product views",
+    "title": "A closer look at the daily routine."
+  },
+  "galleryTitles": {
+    "35 dB routine": "35 dB routine",
+    "App visibility": "App visibility",
+    "Hero view": "Hero view",
+    "Litter fit": "Litter fit",
+    "Low entry": "Low entry",
+    "Odor control": "Odor control"
+  },
+  "productDescriptions": {
+    "puramax-2": "Balanced enclosed self-cleaning litter care with a 200 mm low entry, 2.4GHz Wi-Fi, app visibility, 35 dB operation, and 11 safety sensors.",
+    "purobot-max-pro-2": "Camera-assisted litter care for richer multi-cat identity and event visibility, with a larger 8L waste bin and dual-band Wi-Fi.",
+    "purobot-crystal-duo": "Open-top format with the lowest entry in this comparison and a PETKIT proprietary crystal tray workflow.",
+    "yumshare-solo": "Smart feeding support with a 3L dry-food container, scheduled meals, 1080p camera check-ins, night vision, and two-way audio.",
+    "eversweet-max-2": "Cordless filtered hydration support with 3L capacity, a 5000 mAh battery, 26 dB operation, motion sensing, and app monitoring."
+  },
+  "sections": {
+    "ecosystemBody": "Pair self-cleaning litter care with smart feeding and fresh water in one connected PETKIT routine.",
+    "ecosystemHeading": "Complete the Smart Cat Care ecosystem",
+    "litterBoxBody": "Three PETKIT litter boxes in one category. Pick the size, format, and smart features that fit your home.",
+    "litterBoxHeading": "The self-cleaning litter box family"
+  },
+  "specValues": {
+    "Not applicable": "Not applicable",
+    "1-10 meals/day": "1-10 meals/day",
+    "1-5 portions/meal": "1-5 portions/meal",
+    "1080p with night vision": "1080p with night vision",
+    "Two-way audio; voice call up to 20 seconds": "Two-way audio; voice call up to 20 seconds",
+    "5 AAA batteries, up to 14 days": "5 AAA batteries, up to 14 days",
+    "Dry or freeze-dried food only; max 12 mm kibble": "Dry or freeze-dried food only; max 12 mm kibble",
+    "Confirm Solo vs Solo 2 before publishing Wi-Fi band": "Confirm Solo vs Solo 2 before publishing Wi-Fi band",
+    "Up to 83 days": "Up to 83 days",
+    "About 10 cm range; 1-minute water flow": "About 10 cm range; 1-minute water flow",
+    "Heat-resistant PPO, 304 stainless steel tray": "Heat-resistant PPO, 304 stainless steel tray",
+    "No UVC claim unless UVC variant is confirmed": "No UVC claim unless UVC variant is confirmed",
+    "AI camera for identity and image-based routine visibility": "AI camera for identity and image-based routine visibility",
+    "Up to 15 cats": "Up to 15 cats",
+    "Behavior/image monitoring only; not veterinary diagnosis": "Behavior/image monitoring only; not veterinary diagnosis",
+    "Up to 17 days for one-cat households; varies by use and environment": "Up to 17 days for one-cat households; varies by use and environment",
+    "ABS, silicone": "ABS, silicone",
+    "PETKIT Crystal Litter tray only; not regular litter": "PETKIT Crystal Litter tray only; not regular litter",
+    "Image/routine monitoring only; no disease claim": "Image/routine monitoring only; no disease claim",
+    "Most clumping litter; avoid crystal litter and particles over 12 mm": "Most clumping litter; avoid crystal litter and particles over 12 mm",
+    "Up to 15 days for one-cat households; varies by use and weather": "Up to 15 days for one-cat households; varies by use and weather",
+    "Sealed waste bin + K3 smart spray + N50 2.0 deodorizer": "Sealed waste bin + K3 smart spray + N50 2.0 deodorizer"
+  },
+  "faqs": {
+    "puramax-2": [
+      {
+        "question": "Can kittens use Pura Max 2?",
+        "answer": "It is not recommended for cats under 1.5 kg. If a household has both kittens and adult cats, use the kitten-protection guidance in the official instructions."
+      },
+      {
+        "question": "Where should Pura Max 2 be placed?",
+        "answer": "Place it on a hard, flat, stable surface. Avoid soft carpet and avoid blocking the entry path."
+      },
+      {
+        "question": "What happens if Wi-Fi disconnects?",
+        "answer": "Preset settings can continue, but app data will not update until the device reconnects."
+      },
+      {
+        "question": "Which litter works with it?",
+        "answer": "Use most clumping litter. Avoid crystal litter and particles longer than 12 mm, and check official guidance before trying a new litter type."
+      },
+      {
+        "question": "How often should the waste bin be emptied?",
+        "answer": "PETKIT lab data states up to about 15 days for a one-cat household, but actual timing depends on the number of cats, usage frequency, temperature, and humidity."
+      },
+      {
+        "question": "Does it diagnose health issues?",
+        "answer": "No. App and routine data are for daily care reference only. Pura Max 2 is not a medical or veterinary diagnostic device and does not replace advice from a veterinarian."
+      }
+    ],
+    "purobot-max-pro-2": [
+      {
+        "question": "Who is Purobot Max Pro 2 best for?",
+        "answer": "It is best for multi-cat households that want camera-assisted routine visibility, identity context, a larger 8L waste bin, and dual-band Wi-Fi."
+      },
+      {
+        "question": "Which specs matter most before choosing?",
+        "answer": "Compare the 8L waste bin, 12 sensors, 2.4/5GHz Wi-Fi, AI camera visibility, and the fact that image data is not medical diagnosis."
+      },
+      {
+        "question": "Are availability, warranty, and pricing confirmed here?",
+        "answer": "Prices are reference pricing for this product experience. Availability, warranty, and final checkout terms can vary by market and purchase channel."
+      }
+    ],
+    "purobot-crystal-duo": [
+      {
+        "question": "Who is Purobot Crystal Duo best for?",
+        "answer": "It is best for households that prioritize low-entry access, an open-top format, and the proprietary PETKIT Crystal Litter tray workflow."
+      },
+      {
+        "question": "Which specs matter most before choosing?",
+        "answer": "Review the 180 mm entry, 70L interior, 40 dB operation, 2.4/5GHz Wi-Fi, and PETKIT Crystal Litter tray constraint."
+      },
+      {
+        "question": "Are availability, warranty, and pricing confirmed here?",
+        "answer": "Prices are reference pricing for this product experience. Availability, warranty, and final checkout terms can vary by market and purchase channel."
+      }
+    ],
+    "yumshare-solo": [
+      {
+        "question": "Who is YumShare Solo best for?",
+        "answer": "It is best as the feeding add-on for scheduled dry-food meals, portion planning, and remote camera check-ins."
+      },
+      {
+        "question": "Which specs matter most before choosing?",
+        "answer": "Review the 3L capacity, meal schedule, portion range, 1080p camera, two-way audio, and dry-food size limit."
+      },
+      {
+        "question": "Are availability, warranty, and pricing confirmed here?",
+        "answer": "Prices are reference pricing for this product experience. Availability, warranty, and final checkout terms can vary by market and purchase channel."
+      }
+    ],
+    "eversweet-max-2": [
+      {
+        "question": "Who is Eversweet Max 2 best for?",
+        "answer": "It is best as the cordless hydration add-on for households that want filtered water support and app-connected refill visibility."
+      },
+      {
+        "question": "Which specs matter most before choosing?",
+        "answer": "Review the 3L capacity, 5000 mAh battery, cordless runtime, 26 dB operation, motion sensing, and app control."
+      },
+      {
+        "question": "Are availability, warranty, and pricing confirmed here?",
+        "answer": "Prices are reference pricing for this product experience. Availability, warranty, and final checkout terms can vary by market and purchase channel."
+      }
+    ]
+  },
+  "whyItFits": {
+    "puramax-2": [
+      {
+        "title": "Calm by design",
+        "body": "A 35 dB cycle helps the routine stay quiet during mornings, evenings, and compact-home use."
+      },
+      {
+        "title": "Considered safety",
+        "body": "Eleven sensors help watch weight, motion, and approach before the cleaning routine continues."
+      },
+      {
+        "title": "At home in the room",
+        "body": "The 200 mm low entry and enclosed shape support everyday comfort without adding a camera premium."
+      }
+    ],
+    "purobot-max-pro-2": [
+      {
+        "title": "Richer visibility",
+        "body": "Camera-assisted monitoring helps households that want more event context around litter-box visits."
+      },
+      {
+        "title": "Multi-cat clarity",
+        "body": "Identity-focused features make this the upgrade path when multiple cats share the same routine."
+      },
+      {
+        "title": "Spacious routine",
+        "body": "The large interior and larger waste bin suit homes that need more automated capacity."
+      }
+    ],
+    "purobot-crystal-duo": [
+      {
+        "title": "Lowest entry",
+        "body": "The open-top format and 180 mm entry support households that prioritize easy access."
+      },
+      {
+        "title": "Tray workflow",
+        "body": "The crystal tray approach is suited for owners who prefer a disposable maintenance routine."
+      },
+      {
+        "title": "Open profile",
+        "body": "The shape feels less enclosed for cats that do not prefer covered litter boxes."
+      }
+    ],
+    "yumshare-solo": [
+      {
+        "title": "Scheduled meals",
+        "body": "Portion planning supports a steadier feeding rhythm through the day."
+      },
+      {
+        "title": "Quiet countertop fit",
+        "body": "The compact body works as a companion device beside the litter-care routine."
+      },
+      {
+        "title": "Remote check-ins",
+        "body": "Camera-assisted visibility helps owners follow feeding moments while away."
+      }
+    ],
+    "eversweet-max-2": [
+      {
+        "title": "Cordless placement",
+        "body": "Battery-powered use helps the fountain move where the cat naturally drinks."
+      },
+      {
+        "title": "Fresh water rhythm",
+        "body": "Filtered hydration support pairs naturally with litter care and scheduled feeding."
+      },
+      {
+        "title": "App-connected routine",
+        "body": "App visibility supports a calmer daily refill and care loop."
+      }
+    ]
+  }
+}
