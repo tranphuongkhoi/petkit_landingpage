@@ -1,4 +1,5 @@
 import { productCatalog, type ProductCatalogItem } from "@/lib/product-catalog";
+import { STORAGE_KEYS } from "@/lib/constants";
 
 export type StoredCartItem = {
   id: string;
@@ -10,10 +11,10 @@ export type StoredCartItem = {
   slug: string;
 };
 
-export const CART_STORAGE_KEY = "petkit_cart_items";
-export const CART_UPDATED_EVENT = "petkit-cart-updated";
-export const WISHLIST_STORAGE_KEY = "petkit_wishlist_items";
-export const RECENT_STORAGE_KEY = "petkit_recently_viewed";
+export const CART_STORAGE_KEY = STORAGE_KEYS.cart;
+export const CART_UPDATED_EVENT = STORAGE_KEYS.cartUpdatedEvent;
+export const WISHLIST_STORAGE_KEY = STORAGE_KEYS.wishlist;
+export const RECENT_STORAGE_KEY = STORAGE_KEYS.recent;
 
 export function readStoredArray<T>(key: string, fallback: T[]): T[] {
   try {
@@ -25,12 +26,12 @@ export function readStoredArray<T>(key: string, fallback: T[]): T[] {
 }
 
 export function writeCart(cart: StoredCartItem[]) {
-  window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-  window.dispatchEvent(new Event(CART_UPDATED_EVENT));
+  window.localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(cart));
+  window.dispatchEvent(new Event(STORAGE_KEYS.cartUpdatedEvent));
 }
 
 export function getStoredCart() {
-  return readStoredArray<StoredCartItem>(CART_STORAGE_KEY, []);
+  return readStoredArray<StoredCartItem>(STORAGE_KEYS.cart, []);
 }
 
 export function getItemPrice(item: StoredCartItem) {
