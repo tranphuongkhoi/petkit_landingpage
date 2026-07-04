@@ -30,6 +30,13 @@ type GroqChatResponse = {
 const productFoundation = productFoundationJson as ProductFoundation;
 const MAX_HISTORY_TURNS = 8;
 const GROQ_API_TIMEOUT = 8000;
+const OPENROUTER_API_TIMEOUT = 9000;
+const OPENROUTER_MODELS = [
+  process.env.OPENROUTER_MODEL_PRIMARY ??
+    "qwen/qwen3-next-80b-a3b-instruct:free",
+  process.env.OPENROUTER_MODEL_FALLBACK ??
+    "nvidia/nemotron-3-nano-30b-a3b:free",
+];
 
 function sanitizeHistory(history: unknown): ChatTurn[] {
   if (!Array.isArray(history)) return [];
@@ -73,38 +80,75 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "empty_message" }, { status: 400 });
   }
 
-  const apiKey = process.env.GROQ_API_KEY;
-  const model = process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile";
-
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "assistant_unavailable" },
-      { status: 503 },
-    );
-  }
-
   try {
     const locale = payload.locale === "vi" ? "vi" : "en";
     const history = sanitizeHistory(payload.history);
+    const messages = [
+      {
+        role: "system" as const,
+        content: buildSystemPrompt(locale, payload.context),
+      },
+      ...history,
+      {
+        role: "user" as const,
+        content: message,
+      },
+    ];
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), GROQ_API_TIMEOUT);
+    const groqResult = await requestGroq(messages);
 
+    if (groqResult.reply) {
+      return NextResponse.json({ reply: groqResult.reply, mode: "groq" });
+    }
+
+    const openRouterResult = await requestOpenRouter(messages);
+
+    if (openRouterResult.reply) {
+      return NextResponse.json({
+        reply: openRouterResult.reply,
+        mode: openRouterResult.model,
+        provider: "openrouter",
+      });
+    }
+
+    return NextResponse.json(
+      {
+        error: groqResult.limitRelated
+          ? "assistant_provider_limited"
+          : "assistant_unavailable",
+        fallbackAvailable: Boolean(process.env.OPENROUTER_API_KEY),
+      },
+      { status: groqResult.limitRelated ? 429 : 502 },
+    );
+  } catch (error) {
+    console.error("Assistant request failed", error);
+    return NextResponse.json(
+      {
+        error: "assistant_unavailable",
+        fallbackAvailable: Boolean(process.env.OPENROUTER_API_KEY),
+      },
+      { status: 502 },
+    );
+  }
+}
+
+async function requestGroq(
+  messages: Array<{ role: "system" | "user" | "assistant"; content: string }>,
+) {
+  const apiKey = process.env.GROQ_API_KEY;
+  const model = process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile";
+
+  if (!apiKey) return { limitRelated: false, reply: "" };
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), GROQ_API_TIMEOUT);
+
+  try {
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         body: JSON.stringify({
-          messages: [
-            {
-              role: "system",
-              content: buildSystemPrompt(locale, payload.context),
-            },
-            ...history,
-            {
-              role: "user",
-              content: message,
-            },
-          ],
+          messages,
           model,
           max_tokens: 220,
           temperature: 0.25,
@@ -118,34 +162,84 @@ export async function POST(request: Request) {
       },
     );
 
-    clearTimeout(timeoutId);
+    const bodyText = response.ok ? "" : await response.text().catch(() => "");
 
     if (!response.ok) {
-      console.error("Groq API error", response.status, await response.text().catch(() => "unknown"));
-      return NextResponse.json(
-        { error: "assistant_unavailable" },
-        { status: 502 },
-      );
+      console.error("Groq API error", response.status, bodyText || "unknown");
+      return {
+        limitRelated: response.status === 429 || /limit|quota|rate/i.test(bodyText),
+        reply: "",
+      };
     }
 
     const data = (await response.json()) as GroqChatResponse;
-    const reply = data.choices?.[0]?.message?.content?.trim();
 
-    if (!reply) {
-      return NextResponse.json(
-        { error: "assistant_empty_response" },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ reply, mode: "groq" });
+    return {
+      limitRelated: false,
+      reply: data.choices?.[0]?.message?.content?.trim() ?? "",
+    };
   } catch (error) {
-    console.error("Assistant request failed", error);
-    return NextResponse.json(
-      { error: "assistant_unavailable" },
-      { status: 502 },
-    );
+    console.error("Groq request failed", error);
+    return { limitRelated: false, reply: "" };
+  } finally {
+    clearTimeout(timeoutId);
   }
+}
+
+async function requestOpenRouter(
+  messages: Array<{ role: "system" | "user" | "assistant"; content: string }>,
+) {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+
+  if (!apiKey) return { model: "", reply: "" };
+
+  for (const model of OPENROUTER_MODELS) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), OPENROUTER_API_TIMEOUT);
+
+    try {
+      const response = await fetch(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          body: JSON.stringify({
+            messages,
+            model,
+            max_tokens: 220,
+            temperature: 0.25,
+          }),
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://helicorp-petkit.vercel.app",
+            "X-Title": "PETKIT Smart Cat Care",
+          },
+          method: "POST",
+          signal: controller.signal,
+        },
+      );
+
+      if (!response.ok) {
+        console.error(
+          "OpenRouter API error",
+          model,
+          response.status,
+          await response.text().catch(() => "unknown"),
+        );
+        continue;
+      }
+
+      const data = (await response.json()) as GroqChatResponse;
+      const reply = data.choices?.[0]?.message?.content?.trim();
+
+      if (reply) return { model, reply };
+    } catch (error) {
+      console.error("OpenRouter request failed", model, error);
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  return { model: "", reply: "" };
 }
 
 function buildSystemPrompt(
