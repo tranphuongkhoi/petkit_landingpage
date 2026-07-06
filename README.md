@@ -6,6 +6,7 @@ Responsive PETKIT product experience built for the HeLiCorp IT Website Internshi
 
 - Repository: https://github.com/tranphuongkhoi/petkit_landingpage
 - Production: https://helicorp-petkit.vercel.app
+- Google Sheets: https://docs.google.com/spreadsheets/d/151cMxAGb7baLm6aHIJmvdlG9Wbbh1RgIZmvyAjG4m1Y
 - PageSpeed: https://pagespeed.web.dev/analysis/https-helicorp-petkit-vercel-app/lc40ve4jxo
 
 ## Preview
